@@ -1,0 +1,40 @@
+
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" aria-label="Main navigation">
+  <div class="w-100 container-fluid">
+    <a class="navbar-brand" href="#">Blog</a>
+    <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="w-100 navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+      <ul class="w-100 navbar-nav me-auto mb-2 mb-lg-0 .d-flex justify-content-between ">
+        <li class="nav-item">
+          <%= link_to "Inicio", root_path ,class:"nav-link active", "arial-current": "page"%>
+        </li>
+        <% unless user_signed_in?%>
+          <li class="entrar-cadastrar">
+            <%=link_to( "Entrar/Cadastrar", new_user_session_path, class:"nav-link") %>
+          </li>
+        <%end%>
+        <%if user_signed_in?%>
+        <div class="d-flex align-items-center" style="position: relative; ">
+          <li class="nav-item dropdown" >
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Configurações</a>
+            <ul class="dropdown-menu " >
+              <li class="nav-item"><%= button_to("Sair", destroy_user_session_path, method: :delete ,class:"btnout") %> </li>
+              <li class="nav-item"><%= link_to( "Editar Usuario", edit_user_registration_path(current_user.id), class:"btnout") %>
+            </ul>
+          </li>
+          <li class="nav-item dropdown" >
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Cadastrar produtos</a>
+            <ul class="dropdown-menu " >
+              <li class="nav-item"><%= link_to( "cadastrar produtos", new_product_path, class:"btnout") %>
+            </ul>
+          </li>
+        </div>
+          </ul>
+        </li>
+        <%end%>
+      </ul>
+    </div>
+  </div>
+</nav>

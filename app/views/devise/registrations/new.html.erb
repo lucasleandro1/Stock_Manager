@@ -1,0 +1,18 @@
+<h2 class="h3 mb-3 font-weight-normal" style="text-align: center; padding-top: 10px">Cadastre-se</h2>
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%=f.error_notification%>
+    <div class="field">
+      <%= f.input :email, required: true, label: false, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "E-mail" %>
+      <% if @minimum_password_length %>
+      <em>(<%= @minimum_password_length %> Mínimo de caracteres)</em>
+      <% end %><br />
+      <%= f.input :password, required: true, label: false, autocomplete: "new-password", class: "form-control", placeholder: "Senha" %>
+      <%= f.input :password_confirmation, required: true, label: false,autocomplete: "new-password", class: "form-control", placeholder: "Confirmar senha" %>
+    </div>
+  <div class="actions">
+    <%= f.submit "Cadastrar", class: "btn btn-primary btn-block"%>
+  </div>
+
+  <hr>
+  <%= render "devise/shared/links" %>
+<% end %>

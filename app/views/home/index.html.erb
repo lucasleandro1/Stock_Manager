@@ -1,0 +1,15 @@
+<% if @products.present? %>
+  <div class="cards">
+    <% @products.each do |product| %>
+      <div class="post">
+        <p class="tag"><%= product.name%></p>
+        <p class="tag"><%= product.sku%></p>
+        <p class="tag"><%= product.price%></p>
+        <p class="tag"><%= product.stock_quantity%></p>
+        <hr>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>Não há produtos.</p>
+<% end %>

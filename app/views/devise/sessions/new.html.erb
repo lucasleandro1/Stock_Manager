@@ -1,0 +1,16 @@
+<h2 class="h3 mb-3 font-weight-normal" style="text-align: center; padding-top: 10px"> Entrar</h2>
+<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <%=f.error_notification%>
+  <div class="field">
+    <%= f.input :email,required: true, label: false, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "E-mail"%>
+    <%= f.input :password,required: true, label: false, autocomplete: "current-password", class: "form-control", placeholder: "Senha" %>
+  <% if devise_mapping.rememberable? %>
+    <%= f.input :remember_me, as: :boolean %>
+  <% end %>
+  </div>
+  <div class="actions">
+    <%= f.button :submit, "Entrar", class: "btn btn-primary btn-block" %>
+  </div>
+<hr>
+<%= render "devise/shared/links" %>
+<% end %>
