@@ -44,7 +44,7 @@ class ProductsController < ApplicationController
   def destroy
     @product = current_user.product.find(params[:id])
     @product.destroy
-    redirect_to product_path, notice: 'product excluído com sucesso.'
+    redirect_to product_path, notice: "product excluído com sucesso."
   end
 
   private
