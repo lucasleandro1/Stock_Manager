@@ -7,7 +7,7 @@ class CategoriesController < ApplicationController
   end
 
   def new
-    @category = current_user.categories.build
+    @category = current_user.category.build
   end
 
   def create
@@ -49,6 +49,6 @@ class CategoriesController < ApplicationController
   private
 
   def category_params
-    params.require(:category).permit(:id, :name, :description, :sku, :price, :stock_quantity)
+    params.require(:category).permit(:id, :name)
   end
 end

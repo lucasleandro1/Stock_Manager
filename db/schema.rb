@@ -15,7 +15,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_30_143218) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
@@ -28,7 +28,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_30_143218) do
     t.datetime "updated_at", null: false
     t.string "sku"
     t.integer "user_id"
-    t.integer "category_id", null: false
+    t.integer "category_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["sku"], name: "index_products_on_sku", unique: true
   end

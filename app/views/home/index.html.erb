@@ -1,20 +1,38 @@
-<% if @products.present? %>
-  <div class="cards">
-    <% @products.each do |product| %>
-      <div class="post">
-        <p class="tag"><%= product.name%></p>
-        <p class="tag"># <%= product.sku%></p>
-        <p class="tag">Preço <%= product.price%></p>
-        <p class="tag">Quantidade: <%= product.stock_quantity%></p>
-          <a href="#" data-bs-toggle="dropdown" aria-expanded="false"></a>
-          <ul>
-            <li><%= link_to "Editar", edit_product_path(product), class: "btnout" %></li>
-            <li><%= button_to("Excluir", product_path(product), method: :delete ,class:"btnout") %></li>
-          </ul>
-        <hr>
-      </div>
-    <% end %>
+<%= simple_form_for :search, url: root_path, method: :get, html: { class: "form-inline" } do |f| %>
+  <div class="form-group">
+    <%= f.input :category_id, collection: Category.all, label: "Filtrar por Categoria", include_blank: "Todas as Categorias", input_html: { class: "form-control" } %>
   </div>
+  <%= f.submit "Buscar", class: "btn btn-primary" %>
+<% end %>
+
+<% if @products.present? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>SKU</th>
+        <th>Preço</th>
+        <th>Quantidade</th>
+        <th>Categoria</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td><%= product.name %></td>
+          <td><%= product.sku %></td>
+          <td><%= number_to_currency(product.price, unit: "R$") %></td>
+          <td><%= product.stock_quantity %></td>
+          <td><%= product.category.name if product.category %></td>
+          <td>
+            <%= link_to "Editar", edit_product_path(product), class: "btn btn-warning btn-sm" %>
+            <%= button_to "Excluir", product_path(product), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Tem certeza?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
-  <p>Não há produtos.</p>
+  <p class="alert alert-warning">Nenhum produto encontrado.</p>
 <% end %>

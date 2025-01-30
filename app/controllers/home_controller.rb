@@ -2,6 +2,11 @@ class HomeController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @products = Product.order(created_at: :desc)
+    if params[:search].present? && params[:search][:category_id].present?
+      @products = Product.where(category_id: params[:search][:category_id])
+    else
+      @products = Product.all
+    end
+    @categories = Category.all
   end
 end
