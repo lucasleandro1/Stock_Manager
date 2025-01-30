@@ -1,4 +1,4 @@
-class StockMovimentsController < ApplicationController
+class StockMovementsController < ApplicationController
   before_action :authenticate_user!
 
   def index
