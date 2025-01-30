@@ -1,4 +1,5 @@
 class Category < ApplicationRecord
-  has_many :products, dependent: :restrict_with_error
+  has_many :products
   validates :name, presence: true, uniqueness: true
+  belongs_to :user
 end
