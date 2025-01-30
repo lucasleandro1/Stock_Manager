@@ -1,0 +1,12 @@
+<% if @products.present? %>
+  <% @products.each do |product| %>
+    <div class="post">
+      <div class="d-flex align-items-center justify-content-between">
+        <h2><%= product.name %></h2>
+      </div>
+      <hr>
+    </div>
+  <% end %>
+<% else %>
+  <p>Nenhuma categoria cadastrada.</p>
+<% end %> 
