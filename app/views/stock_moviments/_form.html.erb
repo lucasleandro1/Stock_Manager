@@ -1,0 +1,7 @@
+
+<%= simple_form_for @stock_moviment do |f| %>
+  <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "name"%>
+  <%= f.input :moviment, collection: Category.all, label_method: :name, value_method: :id, prompt: "Selecione uma categoria",label: "Categoria " %>
+  <%= f.input :reason, required: true, label: false, autofocus: true, autocomplete: "sku", class: "form-control", placeholder: "sku" %>
+  <%= f.button :submit, class: "btn btn-primary btn-block" %>
+<% end %>
