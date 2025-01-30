@@ -1,4 +1,4 @@
-class StockMovement < ApplicationRecord
+class StockMoviment < ApplicationRecord
   belongs_to :product
 
   enum movement_type: { entrada: 0, saida: 1 }
