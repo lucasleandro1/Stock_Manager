@@ -22,8 +22,7 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = current_user.product.find(params[:id])
-    @comment = @product.comments
+    @product = current_user.products.find(params[:id])
   end
 
   def update
@@ -44,12 +43,12 @@ class ProductsController < ApplicationController
   def destroy
     @product = current_user.product.find(params[:id])
     @product.destroy
-    redirect_to product_path, notice: "product excluído com sucesso."
+    redirect_to products_path, notice: "product excluído com sucesso."
   end
 
   private
 
   def product_params
-    params.require(:product).permit(:name, :description, :sku, :price, :stock_quantity)
+    params.require(:product).permit(:id, :name, :description, :sku, :price, :stock_quantity)
   end
 end

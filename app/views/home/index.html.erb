@@ -3,9 +3,14 @@
     <% @products.each do |product| %>
       <div class="post">
         <p class="tag"><%= product.name%></p>
-        <p class="tag"><%= product.sku%></p>
-        <p class="tag"><%= product.price%></p>
-        <p class="tag"><%= product.stock_quantity%></p>
+        <p class="tag"># <%= product.sku%></p>
+        <p class="tag">Preço <%= product.price%></p>
+        <p class="tag">Quantidade: <%= product.stock_quantity%></p>
+          <a href="#" data-bs-toggle="dropdown" aria-expanded="false"></a>
+          <ul>
+            <li><%= link_to "Editar", edit_product_path(product), class: "btnout" %></li>
+            <li><%= button_to("Excluir", product_path(product), method: :delete ,class:"btnout") %></li>
+          </ul>
         <hr>
       </div>
     <% end %>
