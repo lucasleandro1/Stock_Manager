@@ -3,52 +3,52 @@ class ProductsController < ApplicationController
 
   def index
     @user = current_user
-    @product = @user.product.order(created_at: :desc)
+    @products = @user.products.order(created_at: :desc)
   end
 
   def new
-    @product = current_user.product.build
+    @products = current_user.products.build
   end
 
   def create
-    @product = current_user.product.build(product_params)
-    if @product.save
-      flash[:notice] = "product created."
+    @products = current_user.products.build(products_params)
+    if @products.save
+      flash[:notice] = "products created."
       redirect_to root_path
     else
-      flash[:error] = "Error when registering product."
+      flash[:error] = "Error when registering products."
       render :new
     end
   end
 
   def show
-    @product = current_user.products.find(params[:id])
+    @products = current_user.products.find(params[:id])
   end
 
   def update
-    @product = current_user.product.find(params[:id])
-    if @product.update(product_params)
-      flash[:notice] = "product atualizado com sucesso."
+    @products = current_user.products.find(params[:id])
+    if @products.update(products_params)
+      flash[:notice] = "products atualizado com sucesso."
       redirect_to root_path
     else
-      flash[:error] = "product não atualizado."
+      flash[:error] = "products não atualizado."
       render :edit
     end
   end
 
   def edit
-    @product = current_user.product.find(params[:id])
+    @products = current_user.products.find(params[:id])
   end
 
   def destroy
-    @product = current_user.product.find(params[:id])
-    @product.destroy
-    redirect_to products_path, notice: "product excluído com sucesso."
+    @products = current_user.products.find(params[:id])
+    @products.destroy
+    redirect_to products_path, notice: "products excluído com sucesso."
   end
 
   private
 
-  def product_params
+  def products_params
     params.require(:product).permit(:id, :name, :description, :sku, :price, :stock_quantity, :category_id)
   end
 end

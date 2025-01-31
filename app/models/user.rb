@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :product
-  has_many :category
+  has_many :products
+  has_many :categories
+  has_many :stock_movements
 end
