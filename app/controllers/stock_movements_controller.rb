@@ -3,52 +3,52 @@ class StockMovementsController < ApplicationController
 
   def index
     @user = current_user
-    @stockmoviment = @user.stockmoviment.order(created_at: :desc)
+    @stock_movements = @user.stock_movements.order(created_at: :desc)
   end
 
   def new
-    @stockmoviment = current_user.stockmoviment.build
+    @stock_movements = current_user.stock_movements.build
   end
 
   def create
-    @stockmoviment = current_user.stockmoviment.build(stockmoviment_params)
-    if @stockmoviment.save
-      flash[:notice] = "stockmoviment created."
+    @stock_movements = current_user.stock_movements.build(stock_movements_params)
+    if @stock_movements.save
+      flash[:notice] = "stock_movements created."
       redirect_to root_path
     else
-      flash[:error] = "Error when registering stockmoviment."
+      flash[:error] = "Error when registering stock_movements."
       render :new
     end
   end
 
   def show
-    @stockmoviment = current_user.stockmoviments.find(params[:id])
+    @stock_movements = current_user.stock_movements.find(params[:id])
   end
 
   def update
-    @stockmoviment = current_user.stockmoviment.find(params[:id])
-    if @stockmoviment.update(stockmoviment_params)
-      flash[:notice] = "stockmoviment atualizado com sucesso."
+    @stock_movements = current_user.stock_movements.find(params[:id])
+    if @stock_movements.update(stock_movements_params)
+      flash[:notice] = "stock_movements atualizado com sucesso."
       redirect_to root_path
     else
-      flash[:error] = "stockmoviment não atualizado."
+      flash[:error] = "stock_movements não atualizado."
       render :edit
     end
   end
 
   def edit
-    @stockmoviment = current_user.stockmoviment.find(params[:id])
+    @stock_movements = current_user.stock_movements.find(params[:id])
   end
 
   def destroy
-    @stockmoviment = current_user.stockmoviment.find(params[:id])
-    @stockmoviment.destroy
-    redirect_to stockmoviments_path, notice: "stockmoviment excluído com sucesso."
+    @stock_movements = current_user.stock_movements.find(params[:id])
+    @stock_movements.destroy
+    redirect_to stock_movements_path, notice: "stock_movements excluído com sucesso."
   end
 
   private
 
-  def stockmoviment_params
-    params.require(:stockmoviment).permit(:id, :quantity, :movement_type, :reason, :product_id)
+  def stock_movements_params
+    params.require(:stock_movement).permit(:id, :quantity, :movement_type, :reason, :product_id)
   end
 end

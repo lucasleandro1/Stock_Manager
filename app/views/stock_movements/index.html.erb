@@ -1,12 +1,35 @@
-<% if @products.present? %>
-  <% @products.each do |product| %>
-    <div class="post">
-      <div class="d-flex align-items-center justify-content-between">
-        <h2><%= product.name %></h2>
-      </div>
-      <hr>
-    </div>
-  <% end %>
+
+<% if @stock_movements.present? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Tipo de movimentação</th>
+        <th>Motivo</th>
+        <th>Valor</th>
+        <th>Quantidade</th>
+        <th>Categoria</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @stock_movements.each do |stock_movement| %>
+        <tr>
+          <td><%= stock_movement.product.name %></td>
+          <td><%= stock_movement.movement_type %></td>
+          <td><%= stock_movement.reason %></td>
+          <td><%= number_to_currency(sum(stock_movement), unit: "R$") %></td>
+          <td><%= stock_movement.quantity %></td>
+          <td><%= stock_movement.product.category.name %></td>
+
+          <td>
+            <%= link_to "Editar", edit_stock_movement_path(stock_movement), class: "btn btn-warning btn-sm" %>
+            <%= button_to "Excluir", stock_movement_path(stock_movement), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Tem certeza?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
-  <p>Nenhum produto cadastrado.</p>
-<% end %> 
+  <p class="alert alert-warning">Nenhum produto encontrado.</p>
+<% end %>

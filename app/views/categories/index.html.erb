@@ -1,12 +1,24 @@
-<% if @products.present? %>
-  <% @products.each do |product| %>
-    <div class="post">
-      <div class="d-flex align-items-center justify-content-between">
-        <h2><%= product.name %></h2>
-      </div>
-      <hr>
-    </div>
-  <% end %>
+
+<% if @categories.present? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>categoria</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @categories.each do |category| %>
+        <tr>
+          <td><%= category.name %></td>
+          <td>
+            <%= link_to "Editar", edit_category_path(category), class: "btn btn-warning btn-sm" %>
+            <%= button_to "Excluir", category_path(category), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Tem certeza?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
-  <p>Nenhuma categoria cadastrada.</p>
-<% end %> 
+  <p class="alert alert-warning">Nenhuma categoria encontrada.</p>
+<% end %>

@@ -1,12 +1,38 @@
+<%= simple_form_for :search, url: products_path, method: :get, html: { class: "form-inline" } do |f| %>
+  <div class="form-group">
+    <%= f.input :category_id, collection: Category.all, label: "Filtrar por Categoria " , include_blank: "Todas as Categorias", input_html: { class: "form-control" } %>
+  </div>
+  <%= f.submit "Buscar", class: "btn btn-primary" %>
+<% end %>
+
 <% if @products.present? %>
-  <% @products.each do |product| %>
-    <div class="post">
-      <div class="d-flex align-items-center justify-content-between">
-        <h2><%= product.name %></h2>
-      </div>
-      <hr>
-    </div>
-  <% end %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>SKU</th>
+        <th>Preço</th>
+        <th>Quantidade</th>
+        <th>Categoria</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td><%= product.name %></td>
+          <td><%= product.sku %></td>
+          <td><%= number_to_currency(product.price, unit: "R$") %></td>
+          <td><%= product.stock_quantity %></td>
+          <td><%= product.category.name if product.category %></td>
+          <td>
+            <%= link_to "Editar", edit_product_path(product), class: "btn btn-warning btn-sm" %>
+            <%= button_to "Excluir", product_path(product), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Tem certeza?" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
-  <p>Nenhum produto cadastrado.</p>
-<% end %> 
+  <p class="alert alert-warning">Nenhum produto encontrado.</p>
+<% end %>
