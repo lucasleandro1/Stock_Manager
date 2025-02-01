@@ -4,6 +4,12 @@ class ProductsController < ApplicationController
   def index
     @user = current_user
     @products = @user.products.order(created_at: :desc)
+    if params[:search].present? && params[:search][:category_id].present?
+      @products = Product.where(category_id: params[:search][:category_id])
+    else
+      @products = Product.all
+    end
+    @categories = Category.all
   end
 
   def new
