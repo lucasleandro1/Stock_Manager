@@ -20,13 +20,12 @@ class StockMovement < ApplicationRecord
 
   def update_product_quantity
     case movement_type
-    when 'entrada'
+  when "entrada"
       valor = product.price * 1.7
       product.update!(price: valor)
       product.increment!(:stock_quantity, quantity)
-    when 'saida'
+  when "saida"
       product.decrement!(:stock_quantity, quantity)
     end
   end
-  
 end
