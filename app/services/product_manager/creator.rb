@@ -1,8 +1,9 @@
 module ProductManager
   class Creator
-    attr_reader :product_params
+    attr_reader :user, :product_params
 
-    def initialize(product_params)
+    def initialize(user, product_params)
+      @user = user
       @product_params = product_params
     end
 
@@ -27,15 +28,15 @@ module ProductManager
     end
 
     def product_exists
-      Product.exists?(sku: product_params[:sku])
+      user.products.exists?(sku: product_params[:sku])
     end
 
     def create_product
-      product = Product.new(product_params)
+      product = user.products.new(product_params)
       if product.save
         product
       else
-        raise StandardError.new(product.errors.full_messages.to_sentence)
+        raise StandardError, product.errors.full_messages.to_sentence
       end
     end
   end
