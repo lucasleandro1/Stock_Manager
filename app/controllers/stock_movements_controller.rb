@@ -1,49 +1,55 @@
 class StockMovementsController < ApplicationController
   before_action :authenticate_user!
 
-  def index
-    @user = current_user
-    @stock_movements = @user.stock_movements.order(created_at: :desc)
+  def new
+    @product = Product.new
   end
 
-  def new
-    @stock_movements = current_user.stock_movements.build
+  def index
+    @products = ProductManager::List.new(current_user, params).call
+    @categories = Category.all
   end
 
   def create
-    @stock_movements = current_user.stock_movements.build(stock_movements_params)
-    if @stock_movements.save
-      flash[:notice] = "stock_movements created."
-      redirect_to root_path
+    service = ProductManager::Creator.new(current_user, product_params)
+    result = service.call
+    if result[:success]
+      redirect_to products_path, notice: result[:message]
     else
-      flash[:error] = "Error when registering stock_movements."
+      @product = Product.new(product_params)
+      flash[:alert] = result[:error_message]
       render :new
     end
   end
 
   def show
-    @stock_movements = current_user.stock_movements.find(params[:id])
+    @product = current_user.products.find(params[:id])
   end
 
   def update
-    @stock_movements = current_user.stock_movements.find(params[:id])
-    if @stock_movements.update(stock_movements_params)
-      flash[:notice] = "stock_movements atualizado com sucesso."
-      redirect_to root_path
+    update_service = ProductManager::Updater.new(params[:id], product_params)
+    result = update_service.call
+    if result[:success]
+      redirect_to products_path, notice: "Produto atualizado com sucesso."
     else
-      flash[:error] = "stock_movements não atualizado."
-      render :edit
+      flash[:alert] = result[:error_message]
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def edit
-    @stock_movements = current_user.stock_movements.find(params[:id])
+    @product = current_user.products.find(params[:id])
   end
 
   def destroy
-    @stock_movements = current_user.stock_movements.find(params[:id])
-    @stock_movements.destroy
-    redirect_to stock_movements_path, notice: "stock_movements excluído com sucesso."
+    destroy_service = ProductManager::Destroyer.new(params[:id])
+    result = destroy_service.call
+    if result[:success]
+      redirect_to products_path, notice: result[:message]
+    else
+      flash[:alert] = result[:error_message]
+      redirect_to products_path
+    end
   end
 
   private
