@@ -15,7 +15,7 @@ module CategoryManager
     private
 
     def response(data)
-      { success: true, message: I18n.t("activerecord.errors.messages.category_delete"),resource: data }
+      { success: true, message: I18n.t("activerecord.errors.messages.category_delete"), resource: data }
     end
 
     def response_error(error)
