@@ -1,28 +1,23 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
 
+  def new
+    @product = Product.new
+  end
+
   def index
-    @user = current_user
-    @products = @user.products.order(created_at: :desc)
-    if params[:search].present? && params[:search][:category_id].present?
-      @products = Product.where(category_id: params[:search][:category_id])
-    else
-      @products = Product.all
-    end
+    @products = ProductManager::List.new(current_user, params).call
     @categories = Category.all
   end
 
-  def new
-    @products = current_user.products.build
-  end
-
   def create
-    @products = current_user.products.build(products_params)
-    if @products.save
-      flash[:notice] = "products created."
-      redirect_to root_path
+    service = ProductManager::Creator.new(current_user, product_params)
+    result = service.call
+    if result[:success]
+      redirect_to products_path, notice: result[:message]
     else
-      flash[:error] = "Error when registering products."
+      @product = Product.new(product_params)
+      flash[:alert] = result[:error_message]
       render :new
     end
   end
@@ -32,29 +27,30 @@ class ProductsController < ApplicationController
   end
 
   def update
-    @products = current_user.products.find(params[:id])
-    if @products.update(products_params)
-      flash[:notice] = "products atualizado com sucesso."
-      redirect_to root_path
+    update_service = ProductManager::Updater.new(params[:id], product_params)
+    result = update_service.call
+    if result[:success]
+      redirect_to products_path
     else
-      flash[:error] = "products não atualizado."
-      render :edit
+      render json: { error: result[:error_message] }, status: :unprocessable_entity
     end
   end
 
   def edit
-    @products = current_user.products.find(params[:id])
+    @product = current_user.products.find(params[:id])
   end
 
   def destroy
-    @products = current_user.products.find(params[:id])
-    @products.destroy
-    redirect_to products_path, notice: "products excluído com sucesso."
+    destroy_service = ProductManager::Destroyer.new(params[:id])
+    result = destroy_service.call
+    if result[:success]
+      redirect_to products_path, notice: result[:message]
+    end
   end
 
   private
 
-  def products_params
+  def product_params
     params.require(:product).permit(:id, :name, :description, :sku, :price, :stock_quantity, :category_id)
   end
 end
