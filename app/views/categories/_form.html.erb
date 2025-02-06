@@ -1,5 +1,5 @@
 
-<%= simple_form_for @categories do |f| %>
+<%= simple_form_for @category do |f| %>
   <%= f.input :name, required: true, label: false, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "name"%>
   <%= f.button :submit, class: "btn btn-primary btn-block" %>
 <% end %>

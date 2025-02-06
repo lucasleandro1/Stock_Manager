@@ -1,49 +1,50 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
 
-  def index
-    @user = current_user
-    @categories = @user.categories.order(created_at: :desc)
+  def new
+    @category = Category.new
   end
 
-  def new
-    @categories = current_user.categories.build
+  def index
+    @categories = CategoryManager::List.new(current_user, params).call
   end
 
   def create
-    @categories = current_user.categories.build(categories_params)
-    if @categories.save
-      flash[:notice] = "categories created."
-      redirect_to root_path
+    service = CategoryManager::Creator.new(current_user, categories_params)
+    result = service.call
+    if result[:success]
+      redirect_to categories_path, notice: result[:message]
     else
-      flash[:error] = "Error when registering categories."
+      @category = Category.new(categories_params)
+      flash[:alert] = result[:error_message]
       render :new
     end
   end
 
-  def show
-    @categories = current_user.categories.find(params[:id])
-  end
-
   def update
-    @categories = current_user.categories.find(params[:id])
-    if @categories.update(categories_params)
-      flash[:notice] = "categories atualizado com sucesso."
-      redirect_to root_path
+    update_service = CategoryManager::Updater.new(params[:id], categories_params)
+    result = update_service.call
+    if result[:success]
+      redirect_to categories_path, notice: "Produto atualizado com sucesso."
     else
-      flash[:error] = "categories não atualizado."
-      render :edit
+      flash[:alert] = result[:error_message]
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def edit
-    @categories = current_user.categories.find(params[:id])
+    @category = current_user.categories.find(params[:id])
   end
 
   def destroy
-    @categories = current_user.categories.find(params[:id])
-    @categories.destroy
-    redirect_to categories_path, notice: "categories excluído com sucesso."
+    destroy_service = CategoryManager::Destroyer.new(params[:id])
+    result = destroy_service.call
+    if result[:success]
+      redirect_to categories_path, notice: result[:message]
+    else
+      flash[:alert] = result[:error_message]
+      redirect_to categories_path
+    end
   end
 
   private

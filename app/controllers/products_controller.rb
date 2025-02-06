@@ -23,16 +23,18 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @products = current_user.products.find(params[:id])
+    @product = current_user.products.find(params[:id])
   end
 
   def update
     update_service = ProductManager::Updater.new(params[:id], product_params)
     result = update_service.call
+
     if result[:success]
-      redirect_to products_path
+      redirect_to products_path, notice: "Produto atualizado com sucesso."
     else
-      render json: { error: result[:error_message] }, status: :unprocessable_entity
+      flash[:alert] = result[:error_message]
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -45,6 +47,9 @@ class ProductsController < ApplicationController
     result = destroy_service.call
     if result[:success]
       redirect_to products_path, notice: result[:message]
+    else
+      flash[:alert] = result[:error_message]
+      redirect_to products_path
     end
   end
 
