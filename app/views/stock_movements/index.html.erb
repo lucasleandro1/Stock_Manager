@@ -1,3 +1,9 @@
+<%= simple_form_for :search, url: stock_movements_path, method: :get, html: { class: "form-inline" } do |f| %>
+  <div class="form-group">
+    <%= f.input :product_id, collection: Product.all, label: "Filtrar por produto " , include_blank: "Todas os produtos", input_html: { class: "form-control" } %>
+  </div>
+  <%= f.submit "Buscar", class: "btn btn-primary" %>
+<% end %>
 
 <% if @stock_movements.present? %>
   <table class="table table-striped">

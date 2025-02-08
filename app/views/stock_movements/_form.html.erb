@@ -1,6 +1,6 @@
 
-<%= simple_form_for @stock_movements do |f| %>
-  <%= f.input :product_id, collection: Product.all, label_method: :name, value_method: :id,prompt: "Selecione uma produto", label: "Produto"%>
+<%= simple_form_for @stock_movement do |f| %>
+  <%= f.input :product_id, collection: Product.all, label_method: :name, value_method: :id,prompt: "Selecione um produto", label: "Produto"%>
   <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "quantidade", class: "form-control", placeholder: "quantidade"%>
   <%= f.input :movement_type, collection: StockMovement.movement_types.keys, prompt: "Selecione um tipo de movimento", label: "Tipo de Movimento" %>
   <%= f.input :reason, collection: StockMovement.reasons.keys, prompt: "Selecione um tipo de movimento", label: "Tipo de Movimento" %>

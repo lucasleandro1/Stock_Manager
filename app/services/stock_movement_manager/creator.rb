@@ -8,11 +8,7 @@ module StockMovementManager
     end
 
     def call
-      if stock_movement_exists
-        response_error(message: "activerecord.errors.messages.stock_movement_exists")
-      else
-        response(create_stock_movement)
-      end
+      response(create_stock_movement)
     rescue StandardError => error
       response_error(error.message)
     end
