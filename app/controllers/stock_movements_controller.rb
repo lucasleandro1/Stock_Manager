@@ -2,35 +2,34 @@ class StockMovementsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @product = Product.new
+    @stock_movement = StockMovement.new
   end
 
   def index
-    @products = ProductManager::List.new(current_user, params).call
-    @categories = Category.all
+    @stock_movements = StockMovementManager::List.new(current_user, params).call
   end
 
   def create
-    service = ProductManager::Creator.new(current_user, product_params)
+    service = StockMovementManager::Creator.new(current_user, stock_movement_params)
     result = service.call
     if result[:success]
-      redirect_to products_path, notice: result[:message]
+      redirect_to stock_movements_path, notice: result[:message]
     else
-      @product = Product.new(product_params)
+      @stock_movement = StockMovement.new(stock_movement_params)
       flash[:alert] = result[:error_message]
       render :new
     end
   end
 
   def show
-    @product = current_user.products.find(params[:id])
+    @stock_movement = current_user.stock_movement.find(params[:id])
   end
 
   def update
-    update_service = ProductManager::Updater.new(params[:id], product_params)
+    update_service = StockMovementManager::Updater.new(params[:id], stock_movement_params)
     result = update_service.call
     if result[:success]
-      redirect_to products_path, notice: "Produto atualizado com sucesso."
+      redirect_to stock_movements_path, notice: "Movimentação atualizado com sucesso."
     else
       flash[:alert] = result[:error_message]
       render :edit, status: :unprocessable_entity
@@ -38,23 +37,23 @@ class StockMovementsController < ApplicationController
   end
 
   def edit
-    @product = current_user.products.find(params[:id])
+    @stock_movement = current_user.stock_movements.find(params[:id])
   end
 
   def destroy
-    destroy_service = ProductManager::Destroyer.new(params[:id])
+    destroy_service = StockMovementManager::Destroyer.new(params[:id])
     result = destroy_service.call
     if result[:success]
-      redirect_to products_path, notice: result[:message]
+      redirect_to stock_movements_path, notice: result[:message]
     else
       flash[:alert] = result[:error_message]
-      redirect_to products_path
+      redirect_to stock_movements_path
     end
   end
 
   private
 
-  def stock_movements_params
+  def stock_movement_params
     params.require(:stock_movement).permit(:id, :quantity, :movement_type, :reason, :product_id)
   end
 end
