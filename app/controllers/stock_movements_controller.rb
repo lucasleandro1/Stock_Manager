@@ -54,6 +54,6 @@ class StockMovementsController < ApplicationController
   private
 
   def stock_movement_params
-    params.require(:stock_movement).permit(:id, :quantity, :movement_type, :reason, :product_id)
+    params.require(:stock_movement).permit(:id, :quantity, :movement_type, :reason, :price, :product_id)
   end
 end
