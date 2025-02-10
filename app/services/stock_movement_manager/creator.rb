@@ -8,7 +8,11 @@ module StockMovementManager
     end
 
     def call
-      response(create_stock_movement)
+      ActiveRecord::Base.transaction do
+        stock_movement = create_stock_movement
+        update_stock(stock_movement)
+        response(stock_movement)
+      end
     rescue StandardError => error
       response_error(error.message)
     end
@@ -29,6 +33,15 @@ module StockMovementManager
         stock_movement
       else
         raise StandardError, stock_movement.errors.full_messages.to_sentence
+      end
+    end
+
+    def update_stock(stock_movement)
+      product = stock_movement.product
+      if stock_movement.entrada?
+        product.increment!(:stock_quantity, stock_movement.quantity)
+      else
+        product.decrement!(:stock_quantity, stock_movement.quantity)
       end
     end
   end
