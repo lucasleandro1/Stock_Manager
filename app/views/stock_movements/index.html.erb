@@ -27,7 +27,6 @@
           <td><%= number_to_currency(sum(stock_movement), unit: "R$") %></td>
           <td><%= stock_movement.quantity %></td>
           <td><%= stock_movement.product.category.name %></td>
-
           <td>
             <%= link_to "Editar", edit_stock_movement_path(stock_movement), class: "btn btn-warning btn-sm" %>
             <%= button_to "Excluir", stock_movement_path(stock_movement), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Tem certeza?" } %>
