@@ -1,4 +1,3 @@
-
 <%= simple_form_for @stock_movement do |f| %>
   <%= f.input :product_id, collection: Product.all, label_method: :name, value_method: :id,prompt: "Selecione um produto", label: "Produto"%>
   <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "quantidade", class: "form-control", placeholder: "quantidade"%>
