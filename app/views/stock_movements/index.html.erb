@@ -24,12 +24,12 @@
           <td><%= stock_movement.product.name %></td>
           <td><%= stock_movement.movement_type %></td>
           <td><%= stock_movement.reason %></td>
-          <td><%= number_to_currency(sum(stock_movement), unit: "R$") %></td>
+          <td><%= number_to_currency(stock_movement.price || sum(stock_movement), unit: "R$") %></td>
           <td><%= stock_movement.quantity %></td>
           <td><%= stock_movement.product.category.name %></td>
-          <td>
-            <%= link_to "Editar", edit_stock_movement_path(stock_movement), class: "btn btn-warning btn-sm" %>
-            <%= button_to "Excluir", stock_movement_path(stock_movement), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Tem certeza?" } %>
+          <td class="btn">
+            <%= link_to "Editar", edit_stock_movement_path(stock_movement), class: "btn btn-sm" %>
+            <%= button_to "Excluir", stock_movement_path(stock_movement), method: :delete, class: "btn btn-sm", data: { confirm: "Tem certeza?" } %>
           </td>
         </tr>
       <% end %>
