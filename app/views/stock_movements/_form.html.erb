@@ -2,7 +2,6 @@
   <%= f.input :product_id, collection: Product.all, label_method: :name, value_method: :id,prompt: "Selecione um produto", label: "Produto"%>
   <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "quantidade", class: "form-control", placeholder: "quantidade"%>
   <%= f.input :movement_type, collection: StockMovement.movement_types.keys, prompt: "Selecione um tipo de movimento", label: "Tipo de Movimento" %>
-  <%= f.input :reason, collection: StockMovement.reasons.keys, prompt: "Selecione um tipo de movimento", label: "Tipo de Movimento" %>
   <%= f.input :price, required: true, label: false, autofocus: true, autocomplete: "valor", class: "form-control", placeholder: "valor" %>
   <%= f.button :submit, class: "btn btn-primary btn-block" %>
 <% end %>
