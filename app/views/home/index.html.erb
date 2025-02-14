@@ -1,28 +1,41 @@
-<h1>📊 Dashboard</h1>
-
-<div>
-  <h2>Total de Produtos: <%= @total_produtos %></h2>
-</div>
-
-<div>
-  <h2>📦 Movimentações Recentes</h2>
-  <ul>
-    <% @movimentacoes_recentes.each do |mov| %>
-      <li>
-        <strong><%= mov.movement_type.capitalize %></strong> - 
-        Produto: <%= mov.product.name %>, 
-        Preço: R$ <%= number_to_currency(mov.price || sum(mov) , unit: "R$", separator: ",", delimiter: ".") %> 
-        (Criado em: <%= l(mov.created_at, format: :short) %>)
-      </li>
-    <% end %>
-  </ul>
-</div>
-
-
-<% @vendas_por_mes.each do |mes, total_vendas| %>
-  <div class="mes-vendas">
-    <h3><%= mes %></h3>
-    <p>Total de Vendas: <%= total_vendas%> </p>
-    <h2>💰 Lucro Total: <%= number_to_currency(@lucro_por_mes, unit: "R$", separator: ",", delimiter: ".") %></h2>
+<div class="container-start">
+<div class="sla">
+  <div class="graphic">
+    <h1></h1>
   </div>
-<% end %>
+
+  <div class="produtos">
+    <h3>Produtos</h3>
+    <p>Total em estoque: <%= @products.count %></p>
+    <p class="stock"><h5>Estoque baixo</h5>
+      <% @products.each do |product| %>
+        <% if product.stock_quantity < 10 %>
+          <%= product.name %>
+        <% end %>
+      <% end %>
+    </p>
+  </div>
+</div>
+  <div class="division">
+  <div class="mov">
+    <h2> Ultimas Movimentações</h2>
+    <ul>
+      <% @movimentacoes_recentes.each do |mov| %>
+        <li>
+          <strong><%= mov.movement_type.capitalize %></strong> -
+          Produto: <%= mov.product.name %>,
+          Preço: R$ <%= number_to_currency(mov.price || sum(mov) , unit: "R$", separator: ",", delimiter: ".") %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <% @vendas_por_mes.each do |mes, total_vendas| %>
+    <div class="mes-vendas">
+      <h3><%= mes %></h3>
+      <p>Total de Vendas: <%= total_vendas%> </p>
+      <h2>Lucro Total: <%= number_to_currency(@lucro_por_mes, unit: "R$", separator: ",", delimiter: ".") %></h2>
+    </div>
+  <% end %>
+  </div>
+</div>
