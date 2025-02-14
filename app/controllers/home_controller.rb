@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @total_produtos = Product.count
+    @products = Product.all
     @movimentacoes_recentes = StockMovement.order(created_at: :desc).limit(5)
 
 
