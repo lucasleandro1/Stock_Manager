@@ -16,4 +16,19 @@ class StockMovement < ApplicationRecord
       errors.add(:quantity, "não há estoque suficiente")
     end
   end
+
+  def self.lucro_por_mes
+    stock_movements = where(created_at: 1.year.ago..Time.current).includes(:product)
+    stock_movements.group_by { |sm| sm.created_at.strftime("%B %Y") }.transform_values do |movimentacoes|movimentacoes.sum do |sm|
+        next 0 unless sm.product
+        if sm.movement_type == "saida"
+          sm.quantity * sm.product.price
+        elsif sm.movement_type == "entrada"
+          -sm.price
+        else
+          0
+        end
+      end.to_f
+    end
+  end
 end
