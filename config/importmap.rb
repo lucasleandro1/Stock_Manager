@@ -8,4 +8,3 @@ pin "chartkick", to: "chartkick.js", preload: true
 pin "chart.js", to: "chart.min.js", preload: true
 pin "turbo", to: "turbo.min.js", preload: true
 pin_all_from "app/javascript/controllers", under: "controllers"
-

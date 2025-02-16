@@ -14,10 +14,6 @@ class HomeController < ApplicationController
       .where(created_at: 1.year.ago..Time.current)
       .group_by_month(:created_at, format: "%B %Y")
       .sum { |movimentacao|movimentacao.product.lucro_total }
-      
-
       @lucro_por_mes = StockMovement.lucro_por_mes.to_h
-
-
   end
 end
