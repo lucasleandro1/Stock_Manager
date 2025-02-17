@@ -10,10 +10,17 @@ class HomeController < ApplicationController
     .group_by_month(:created_at, format: "%B %Y")
     .sum(:movement_type)
 
-    @lucro = StockMovement
-      .where(created_at: 1.year.ago..Time.current)
-      .group_by_month(:created_at, format: "%B %Y")
-      .sum { |movimentacao|movimentacao.product.lucro_total }
-      @lucro_por_mes = StockMovement.lucro_por_mes.to_h
+    @lucro = StockMovement.lucro_por_mes.values.sum
+    @lucro_por_mes = StockMovement.lucro_por_mes.to_h
+    @lucro_por_dia = StockMovement.lucro_por_dia.to_h
+    @lucro_por_ano = StockMovement.lucro_por_ano.to_h
+
+    @top_products = StockMovement
+    .where(movement_type: "saida", created_at: 1.year.ago..Time.current)
+    .group(:product_id)
+    .select("product_id, SUM(quantity) AS total_quantity")
+    .joins(:product)
+    .order("total_quantity DESC")
+    .limit(5)
   end
 end

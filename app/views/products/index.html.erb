@@ -1,9 +1,18 @@
-<%= simple_form_for :search, url: products_path, method: :get, html: { class: "form-inline" } do |f| %>
-  <div class="form-group">
-    <%= f.input :category_id, collection: Category.all, label: "Filtrar por Categoria " , include_blank: "Todas as Categorias", input_html: { class: "form-control" } %>
-  </div>
-  <%= f.submit "Buscar", class: "btn btn-primary" %>
-<% end %>
+<div class="filtros">
+  <%= simple_form_for :search, url: products_path, method: :get, html: { class: "form-inline" } do |f| %>
+    <div class="form-group">
+      <%= f.input :category_id, collection: Category.all, label: "Filtrar por Categoria " , include_blank: "Todas as Categorias", input_html: { class: "form-control" } %>
+    </div>
+    <%= f.submit "Buscar", class: "btn btn-primary" %>
+  <% end %>
+
+  <%= simple_form_for :search, url: products_path, method: :get, html: { class: "form-inline" } do |f| %>
+    <div class="form-group-products">
+      <%= f.input :product, collection: Product.all, label: "Filtrar por Produto " , include_blank: "Todas os Produtos", input_html: { class: "form-control" } %>
+    </div>
+    <%= f.submit "Buscar", class: "btn btn-primary" %>
+  <% end %>
+</div>
 
 <% if @products.present? %>
   <table class="table table-striped">

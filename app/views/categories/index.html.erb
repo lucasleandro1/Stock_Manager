@@ -13,7 +13,7 @@
           <td><%= category.name %></td>
           <td class= "btn">
             <%= link_to "Editar", edit_category_path(category), class: "btn btn-sm"%>
-            <%= button_to "Excluir", category_path(category), method: :delete,  class: "btn btn-sm", data: { confirm: "Tem certeza?" } %>
+            <%= button_to "Excluir", category_path(category), method: :delete, class: "btn btn-sm", data: { confirm: "Tem certeza?" } %>
           </td>
         </tr>
       <% end %>
