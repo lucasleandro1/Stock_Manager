@@ -18,9 +18,9 @@ class HomeController < ApplicationController
     @top_products = StockMovement
     .where(movement_type: "saida", created_at: 1.year.ago..Time.current)
     .group(:product_id)
-    .select('product_id, SUM(quantity) AS total_quantity')
+    .select("product_id, SUM(quantity) AS total_quantity")
     .joins(:product)
-    .order('total_quantity DESC')
+    .order("total_quantity DESC")
     .limit(5)
   end
 end

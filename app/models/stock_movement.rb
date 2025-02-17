@@ -36,11 +36,11 @@ class StockMovement < ApplicationRecord
   def self.lucro_por_mes
     calcular_lucro("%B %Y")
   end
-  
+
   def self.lucro_por_dia
     calcular_lucro("%d/%m/%Y")
   end
-  
+
   def self.lucro_por_ano
     calcular_lucro("%Y")
   end
