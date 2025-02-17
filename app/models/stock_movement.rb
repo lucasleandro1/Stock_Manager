@@ -17,9 +17,10 @@ class StockMovement < ApplicationRecord
     end
   end
 
-  def self.lucro_por_mes
+  def self.calcular_lucro(tempo_format)
     stock_movements = where(created_at: 1.year.ago..Time.current).includes(:product)
-    stock_movements.group_by { |sm| sm.created_at.strftime("%B %Y") }.transform_values do |movimentacoes|movimentacoes.sum do |sm|
+    stock_movements.group_by { |sm| sm.created_at.strftime(tempo_format) }.transform_values do |movimentacoes|
+      movimentacoes.sum do |sm|
         next 0 unless sm.product
         if sm.movement_type == "saida"
           sm.quantity * sm.product.price
@@ -30,5 +31,17 @@ class StockMovement < ApplicationRecord
         end
       end.to_f
     end
+  end
+
+  def self.lucro_por_mes
+    calcular_lucro("%B %Y")
+  end
+  
+  def self.lucro_por_dia
+    calcular_lucro("%d/%m/%Y")
+  end
+  
+  def self.lucro_por_ano
+    calcular_lucro("%Y")
   end
 end
