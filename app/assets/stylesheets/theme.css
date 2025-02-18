@@ -9,6 +9,7 @@ body {
 body {
   padding-top: 20px;
   background-color: #f5f7fb !important;
+  font-family: "Roboto", sans-serif;
 }
 
 @media (max-width: 991.98px) {
@@ -234,7 +235,7 @@ hr {
 }
 
 .container-fluid {
-  width: 80%;
+  width: 85%;
 }
 
 .navbar-nav .nav-item.dropdown .nav-link {
