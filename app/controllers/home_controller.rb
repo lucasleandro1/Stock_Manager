@@ -22,5 +22,12 @@ class HomeController < ApplicationController
     .joins(:product)
     .order("total_quantity DESC")
     .limit(5)
+
+    @monthly_entries = StockMovement
+    .where(movement_type: "entrada", created_at: 1.year.ago..Time.current)
+    .group_by_month(:created_at, format: "%b %Y")
+    .sum(:price)
+
+    @low_stock_products = Product.where("stock_quantity < ?", 10)
   end
 end

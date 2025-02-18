@@ -5,13 +5,6 @@
     </div>
     <%= f.submit "Buscar", class: "btn btn-primary" %>
   <% end %>
-
-  <%= simple_form_for :search, url: products_path, method: :get, html: { class: "form-inline" } do |f| %>
-    <div class="form-group-products">
-      <%= f.input :product, collection: Product.all, label: "Filtrar por Produto " , include_blank: "Todas os Produtos", input_html: { class: "form-control" } %>
-    </div>
-    <%= f.submit "Buscar", class: "btn btn-primary" %>
-  <% end %>
 </div>
 
 <% if @products.present? %>

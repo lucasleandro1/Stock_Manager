@@ -1,92 +1,115 @@
-<div class="container-start">
-  <div class="container-fluid d-grid gap-3">
-    <div class="row justify-content-center">
-      <div class="col-7 ">
-        <div class="graphic">
-          <canvas id="myChart" ></canvas>
-          <select id="filterPeriod">
-            <option value="monthly">Lucro por Mês</option>
-            <option value="daily">Lucro por Dia</option>
-            <option value="yearly">Lucro por Ano</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="col-3">
-        <div class="d-flex flex-column align-items-center ">
-          <% @vendas_por_mes.each do |mes, total_vendas| %>
-            <div class="mes-vendas">
-              <h5><%= mes %></h5>
-              <p>Total de Vendas: <%= total_vendas%> </p>
-              <h5>Lucro Total: <%= number_to_currency(@lucro, unit: "R$", separator: ",", delimiter: ".") %></h5>
-            </div>
-          <% end %>
-        <div class="pizza">
-          <canvas id="myPieChart" ></canvas>
-        </div>
-        </div>
+<div class="container-fluid mt-4">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="card p-4 shadow-sm">
+        <h5 class="text-center">📊 Lucro ao Longo do Tempo</h5>
+        <canvas id="myChart" style="max-height: 250px; width: 100%;"></canvas>
+        <select id="filterPeriod" class="form-select mt-2">
+          <option value="monthly">Lucro por Mês</option>
+          <option value="daily">Lucro por Dia</option>
+          <option value="yearly">Lucro por Ano</option>
+        </select>
       </div>
     </div>
 
-    <div class="row justify-content-center">
-      <div class="col-7">
-        <div class= "d-flex flex-row ">
-          <div class="mov">
-            <h2> Últimas Movimentações</h2>
-            <ul>
-              <% @movimentacoes_recentes.each do |mov| %>
-                <li>
-                  <strong><%= mov.movement_type.capitalize %></strong> -
-                  Produto: <%= mov.product.name %>,
-                  Preço: R$ <%= number_to_currency(mov.price || sum(mov) , unit: "R$", separator: ",", delimiter: ".") %>
-                </li>
+    <div class="col-md-6">
+      <div class="card p-2 shadow-sm">
+        <h5 class="text-center">📊 Distribuição de Vendas</h5>
+        <canvas id="myPieChart" style="max-height: 180px; width: 100%;"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4 g-3">
+    <div class="col-md-4">
+      <div class="card p-4 shadow-sm text-center" style="background-color: #e3f2fd; border-color: #90caf9;">
+        <h5>💰 Gastos do Mês</h5>
+        <p class="fs-4 fw-bold"><%=number_to_currency(@monthly_entries.values.sum, unit: "R$", separator: ",", delimiter: ".")%> </p>
+
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 shadow-sm text-center" style="background-color: #e3f2fd; border-color: #90caf9;">
+        <h5>🛒 Total de Vendas</h5>
+        <p class="fs-4 fw-bold"><%= @vendas_por_mes.values.sum %> vendas</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 shadow-sm text-center" style="background-color: #e3f2fd; border-color: #90caf9;">
+        <h5>📈 Lucro</h5>
+          <p class="fs-4 text-success">R$ <%= number_to_currency(@lucro, unit: "R$", separator: ",", delimiter: ".") %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4 g-2">
+    <div class="col-md-6">
+      <div class="card p-2 shadow-sm" style="background-color: #e3f2fd; border-color: #90caf9;">
+        <h5>📋 Últimas Movimentações</h5>
+        <ul>
+          <% @movimentacoes_recentes.each do |mov| %>
+            <li>
+              <strong><%= mov.movement_type.capitalize %></strong> - 
+              Produto: <%= mov.product.name %>, 
+              Preço: R$ <%= number_to_currency(mov.price || sum(mov), unit: "R$", separator: ",", delimiter: ".") %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card p-3 shadow-sm " style="background-color: #e3f2fd; border-color: #90caf9;">
+        <div class="d-flex flex-row ">
+          <div class="card-1">
+            <h5>📦 Total em Estoque</h5>
+            <p class="fs-4"><%= @products.count %> produtos</p>
+          </div>
+          <li class="nav-item-1 dropdown" style="list-style-type: none;">
+            <a class="nav-link-1 dropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">🔔</a>
+            <ul class="dropdown-menu">
+              <% @low_stock_products.each do |product| %>
+                <li class="nav-item"><%= product.name %></li>
               <% end %>
             </ul>
-          </div>
-          <div class="produtos">
-            <h3>Produtos</h3>
-            <p>Total em estoque: <%= @products.count %></p>
-            <% if @products.any? { |product| product.stock_quantity < 10 } %>
-              <div class="estoque-baixo">
-                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Estoque baixo</a>
-                <ul class="dropdown-menu">
-                  <% @products.each do |product| %>
-                    <% if product.stock_quantity < 10 %>
-                      <li class="nav-item"><%= product.name %></li>
-                    <% end %>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
-          </div>
+          </li>
         </div>
+          <h5>🏆 Produto Mais Vendido</h5>
+          <p class="fs-4"><%= @top_products.first.product.name if @top_products.any? %></p>
       </div>
-      
-      <div class="col-3">
-      </div>
-
     </div>
   </div>
 </div>
 
-
-
 <script>
   document.addEventListener("turbo:load", function() {
     var ctx = document.getElementById('myChart').getContext('2d');
-
+    // var dataSets = {
+    //   monthly: {
+    //     labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+    //     data: [5000, 7000, 8000, 6000, 9500, 11000, 12000, 13000, 9000, 8500, 7500, 8800]
+    //   },
+    //   daily: {
+    //     labels: ["01", "02", "03", "04", "05", "06", "07"],
+    //     data: [500, 1200, 800, 600, 1500, 1100, 1300]
+    //   },
+    //   yearly: {
+    //     labels: ["2021", "2022", "2023", "2024"],
+    //     data: [80000, 95000, 102000, 115000]
+    //   }
+    // };
     var dataSets = {
       monthly: {
           labels: <%= raw @lucro_por_mes.keys.to_json %>,
-        data: <%= raw @lucro_por_mes.values.to_json %>
+          data: <%= raw @lucro_por_mes.values.to_json %>
       },
       daily: {
           labels: <%= raw @lucro_por_dia.keys.to_json %>,
-        data: <%= raw @lucro_por_dia.values.to_json %>
+          data: <%= raw @lucro_por_dia.values.to_json %>
       },
       yearly: {
           labels: <%= raw @lucro_por_ano.keys.to_json %>,
-        data: <%= raw @lucro_por_ano.values.to_json %>
+          data: <%= raw @lucro_por_ano.values.to_json %>
       }
     };
 
@@ -99,13 +122,36 @@
           data: dataSets.monthly.data,
           backgroundColor: 'rgba(75, 192, 192, 0.5)',
           borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
+          borderWidth: 2, // Espessura da borda
+          borderRadius: 8 // Cantos arredondados
         }]
       },
       options: {
         responsive: true,
         scales: {
-          y: { beginAtZero: true }
+          y: { 
+            beginAtZero: true,
+            grid: {
+              display: false // Remove as linhas de marcação no eixo Y
+            }
+          },
+          x: {
+            grid: {
+              display: false // Remove as linhas de marcação no eixo X
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false // Remove a legenda
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', // Cor do fundo do tooltip
+            titleColor: 'rgba(255, 255, 255, 0.9)', // Cor do título do tooltip
+            bodyColor: 'rgba(255, 255, 255, 0.9)', // Cor do corpo do tooltip
+            borderColor: 'rgba(255, 255, 255, 0.9)', // Cor da borda do tooltip
+            borderWidth: 1 
+          }
         }
       }
     });
@@ -118,6 +164,8 @@
     });
   });
 </script>
+
+
 
 <script>
   document.addEventListener("turbo:load", function() {
