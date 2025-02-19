@@ -1,7 +1,19 @@
-<%= simple_form_for @stock_movement do |f| %>
-  <%= f.input :product_id, collection: Product.all, label_method: :name, value_method: :id,prompt: "Selecione um produto", label: "Produto"%>
-  <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "quantidade", class: "form-control", placeholder: "quantidade"%>
-  <%= f.input :movement_type, collection: StockMovement.movement_types.keys, prompt: "Selecione um tipo de movimento", label: "Tipo de Movimento" %>
-  <%= f.input :price, required: true, label: false, autofocus: true, autocomplete: "valor", class: "form-control", placeholder: "valor" %>
-  <%= f.button :submit, class: "btn btn-primary btn-block" %>
-<% end %>
+<div class="forms d-flex flex-column justify-content-center px-5">
+  <%= simple_form_for @stock_movement do |f| %>
+    <div class="form d-flex flex-1 mw-100">
+      <div class="w-100 ">
+        <%= f.input :product_id, collection: Product.all, label_method: :name, value_method: :id, prompt: "Selecione um produto",  input_html: { class: "form-control w-100" }, label: false %>
+      </div>
+      <div class="w-100 ml-3">
+        <%= f.input :movement_type, collection: StockMovement.movement_types.keys, prompt: "Selecione um tipo de movimento",  input_html: { class: "form-control w-100" }, label: false %>
+      </div>
+    </div>
+    <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "quantidade", class: "form-control", placeholder: "quantidade"%>
+    <%= f.input :price, required: true, label: false, autofocus: true, autocomplete: "valor", class: "form-control", placeholder: "valor" %>
+    <%= f.button :submit, class: "btn btn-primary btn-block my-3" %>
+  <% end %>
+</div>
+
+
+
+
