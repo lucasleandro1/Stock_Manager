@@ -4,10 +4,10 @@
       <div class="card p-4 shadow-sm"style="background-color: #e3f2fd; border-color: #90caf9;">
         <h3 class="text-center"> Lucro </h3>
         <canvas id="myChart" style="max-height: 250px; max-width: 900px;"></canvas>
-        <select id="filterPeriod" class="form-select form-select-sm" style="width: 150px;">
-          <option value="monthly">Lucro por Mês</option>
-          <option value="daily">Lucro por Dia</option>
-          <option value="yearly">Lucro por Ano</option>
+        <select id="filterPeriod" class="filter form-select form-select-sm" style="width: 80px;">
+          <option value="monthly"> Mês </option>
+          <option value="daily"> Dia </option>
+          <option value="yearly"> Ano </option>
         </select>
       </div>
     </div>
@@ -68,7 +68,7 @@
             <h5> Total em Estoque</h5>
             <p class="fs-4"><%= @products.count %> produtos</p>
           </div>
-          <li class="nav-item-1 dropdown" style="list-style-type: none;">
+          <li class="nav-item-1 dropup" style="list-style-type: none;">
             <a class="nav-link-1 dropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">🔔</a>
             <ul class="dropdown-menu">
               <% @low_stock_products.each do |product| %>
@@ -87,34 +87,34 @@
 <script>
   document.addEventListener("turbo:load", function() {
     var ctx = document.getElementById('myChart').getContext('2d');
-    var dataSets = {
-      monthly: {
-        labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-        data: [5000, 7000, 8000, 6000, 9500, 11000, 12000, 13000, 9000, 8500, 7500, 8800]
-      },
-      daily: {
-        labels: ["01", "02", "03", "04", "05", "06", "07"],
-        data: [500, 1200, 800, 600, 1500, 1100, 1300]
-      },
-      yearly: {
-        labels: ["2021", "2022", "2023", "2024"],
-        data: [80000, 95000, 102000, 115000]
-      }
-    };
     // var dataSets = {
     //   monthly: {
-    //       labels: <%= raw @lucro_por_mes.keys.to_json %>,
-    //       data: <%= raw @lucro_por_mes.values.to_json %>
+    //     labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+    //     data: [5000, 7000, 8000, 6000, 9500, 11000, 12000, 13000, 9000, 8500, 7500, 8800]
     //   },
     //   daily: {
-    //       labels: <%= raw @lucro_por_dia.keys.to_json %>,
-    //       data: <%= raw @lucro_por_dia.values.to_json %>
+    //     labels: ["01", "02", "03", "04", "05", "06", "07"],
+    //     data: [500, 1200, 800, 600, 1500, 1100, 1300]
     //   },
     //   yearly: {
-    //       labels: <%= raw @lucro_por_ano.keys.to_json %>,
-    //       data: <%= raw @lucro_por_ano.values.to_json %>
+    //     labels: ["2021", "2022", "2023", "2024"],
+    //     data: [80000, 95000, 102000, 115000]
     //   }
     // };
+    var dataSets = {
+      monthly: {
+          labels: <%= raw @lucro_por_mes.keys.to_json %>,
+          data: <%= raw @lucro_por_mes.values.to_json %>
+      },
+      daily: {
+          labels: <%= raw @lucro_por_dia.keys.to_json %>,
+          data: <%= raw @lucro_por_dia.values.to_json %>
+      },
+      yearly: {
+          labels: <%= raw @lucro_por_ano.keys.to_json %>,
+          data: <%= raw @lucro_por_ano.values.to_json %>
+      }
+    };
 
     var myChart = new Chart(ctx, {
       type: 'bar',
@@ -153,7 +153,7 @@
             titleColor: 'rgba(255, 255, 255, 0.9)',
             bodyColor: 'rgba(255, 255, 255, 0.9)',
             borderColor: 'rgba(255, 255, 255, 0.9)',
-            borderWidth: 1 
+            borderWidth: 1
           }
         }
       }

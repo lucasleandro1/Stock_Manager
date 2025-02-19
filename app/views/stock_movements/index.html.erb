@@ -1,49 +1,51 @@
-<div class="filtros">
-  <%= simple_form_for :search, url: stock_movements_path, method: :get, html: { class: "form-inline" } do |f| %>
-    <div class="form-group">
-      <%= f.input :product_id, collection: Product.all, label: "Filtrar por produto " , include_blank: "Todas os produtos", input_html: { class: "form-control" } %>
-    </div>
-    <%= f.submit "Buscar", class: "btn btn-primary" %>
-  <% end %>
+<div class="h-100 w-100 pt-4">
+  <div class="filtros">
+    <%= simple_form_for :search, url: stock_movements_path, method: :get, html: { class: "form-inline" } do |f| %>
+      <div class="form-group d-flex align-items-center justify-content-center">
+        <%= f.input :product_id, collection: Product.all, label: false, include_blank: "Todas os produtos", input_html: { class: "form-control" } %>
+        <%= f.submit "Buscar", class: "btn btn-primary mb-3" %>
+      </div>
+    <% end %>
 
-  <%= simple_form_for :search, url: stock_movements_path, method: :get, html: { class: "form-inline" } do |f| %>
-    <div class="form-group">
-      <%= f.input :movement_type, collection: ["entrada", "saida"], label: "Filtrar por Tipo de Movimento", include_blank: "Todos os Tipos", input_html: { class: "form-control" } %>
-    </div>
-    <%= f.submit "Buscar", class: "btn btn-primary" %>
+    <%= simple_form_for :search, url: stock_movements_path, method: :get, html: { class: "form-inline" } do |f| %>
+      <div class="form-group-1">
+        <%= f.input :movement_type, collection: ["entrada", "saida"], label: false, include_blank: "Todos os Tipos", input_html: { class: "form-control" } %>
+      </div>
+      <%= f.submit "Buscar", class: "btn btn-primary mb-3" %>
+    <% end %>
+  </div>
+
+  <% if @stock_movements.present? %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Tipo de movimentação</th>
+          <th>Valor</th>
+          <th>Quantidade</th>
+          <th>Categoria</th>
+          <th>Data</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @stock_movements.each do |stock_movement| %>
+          <tr>
+            <td><%= stock_movement.product.name %></td>
+            <td><%= stock_movement.movement_type %></td>
+            <td><%= number_to_currency(stock_movement.price || sum(stock_movement), unit: "R$") %></td>
+            <td><%= stock_movement.quantity %></td>
+            <td><%= stock_movement.product.category.name %></td>
+            <td><%= stock_movement.created_at.strftime("%d/%m/%Y %H:%M") %></td> 
+            <td class="btn">
+              <%= link_to "Editar", edit_stock_movement_path(stock_movement), class: "btn btn-sm" %>
+              <%= button_to "Excluir", stock_movement_path(stock_movement), method: :delete, class: "btn btn-sm", data: { confirm: "Tem certeza?" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="alert alert-warning">Nenhum produto encontrado.</p>
   <% end %>
 </div>
-
-<% if @stock_movements.present? %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Produto</th>
-        <th>Tipo de movimentação</th>
-        <th>Valor</th>
-        <th>Quantidade</th>
-        <th>Categoria</th>
-        <th>Data</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @stock_movements.each do |stock_movement| %>
-        <tr>
-          <td><%= stock_movement.product.name %></td>
-          <td><%= stock_movement.movement_type %></td>
-          <td><%= number_to_currency(stock_movement.price || sum(stock_movement), unit: "R$") %></td>
-          <td><%= stock_movement.quantity %></td>
-          <td><%= stock_movement.product.category.name %></td>
-          <td><%= stock_movement.created_at.strftime("%d/%m/%Y %H:%M") %></td> 
-          <td class="btn">
-            <%= link_to "Editar", edit_stock_movement_path(stock_movement), class: "btn btn-sm" %>
-            <%= button_to "Excluir", stock_movement_path(stock_movement), method: :delete, class: "btn btn-sm", data: { confirm: "Tem certeza?" } %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p class="alert alert-warning">Nenhum produto encontrado.</p>
-<% end %>

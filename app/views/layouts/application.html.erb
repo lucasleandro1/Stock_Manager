@@ -15,17 +15,12 @@
     <script src="https://unpkg.com/@hotwired/stimulus@3.2.1/dist/stimulus.umd.js"></script>
     <script src="https://unpkg.com/@hotwired/stimulus-loading@1.0.0/dist/stimulus-loading.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@7.3.0/dist/turbo.es2017-umd.js"></script>
-
-
-
     <%= stylesheet_link_tag "theme", media: 'all', 'data-turbolinks-track': 'reload' %>
-
   </head>
   <body>
     <%=render "shared/topbar"%>
-    <p class = "notice"><%= notice%></p>
-    <p class = "alert"><%= alert%></p>
-    <main class="container-1 d-flex flex-column align-items-start " >
+
+    <main class="container-1 d-flex flex-column align-items-start justify-content-center" >
       <%# <%= render partial: 'shared/flash_message'%>
     <%= yield %>
     </main>
