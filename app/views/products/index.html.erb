@@ -1,9 +1,10 @@
 <div class="h-100 w-100 pt-4">
   <div class="filtros d-flex align-items-center">
+    <h1 class="title-1">Produtos</h1>
     <%= simple_form_for :search, url: products_path, method: :get, html: { class: "form-inline" } do |f| %>
       <div class="form-group d-flex align-items-center justify-content-center">
           <%= f.input :category_id, collection: Category.all, label: false, include_blank: "Todas as Categorias", input_html: { class: "form-control " } %>
-          <%= f.submit "Buscar", class: "btn btn-primary mb-3" %>
+          <%= f.submit "Buscar", class: "btn btn-primary mb-3 ml-3" %>
       </div>
     <% end %>
   </div>
@@ -39,4 +40,5 @@
   <% else %>
     <p class="alert alert-warning">Nenhum produto encontrado.</p>
   <% end %>
+  <%= paginate @products %>
 </div>

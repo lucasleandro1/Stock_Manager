@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   end
 
   def index
-    @products = ProductManager::List.new(current_user, params).call
+    @products = ProductManager::List.new(current_user, params).call.page(params[:page]).per(10)
     @categories = Category.all
   end
 
