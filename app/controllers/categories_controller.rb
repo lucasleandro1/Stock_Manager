@@ -6,7 +6,7 @@ class CategoriesController < ApplicationController
   end
 
   def index
-    @categories = CategoryManager::List.new(current_user, params).call
+    @categories = CategoryManager::List.new(current_user, params).call.page(params[:page]).per(10)
   end
 
   def create

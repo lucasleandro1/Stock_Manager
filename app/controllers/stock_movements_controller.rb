@@ -6,7 +6,7 @@ class StockMovementsController < ApplicationController
   end
 
   def index
-    @stock_movements = StockMovementManager::List.new(current_user, params).call
+    @stock_movements = StockMovementManager::List.new(current_user, params).call.page(params[:page]).per(10)
   end
 
   def create
