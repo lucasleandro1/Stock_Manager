@@ -5,8 +5,8 @@
         <h3 class="text-center"> Lucro </h3>
         <canvas id="myChart" style="max-height: 250px; max-width: 900px;"></canvas>
         <select id="filterPeriod" class="filter form-select form-select-sm" style="width: 80px;">
-          <option value="monthly"> Mês </option>
           <option value="daily"> Dia </option>
+          <option value="monthly"> Mês </option>
           <option value="yearly"> Ano </option>
         </select>
       </div>
@@ -28,7 +28,6 @@
       <div class="card p-4 shadow-sm text-center" style="background-color: #e3f2fd; border-color: #90caf9;">
         <h4> Gastos do Mês</h4>
         <p class="fs-4 fw-bold" style="font-size: 18px;"><%=number_to_currency(@monthly_entries.values.sum, unit: "R$", separator: ",", delimiter: ".")%> </p>
-
       </div>
     </div>
     <div class="col-md-4">
@@ -119,10 +118,10 @@
     var myChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: dataSets.monthly.labels,
+        labels: dataSets.daily.labels,
         datasets: [{
           label: 'Lucro',
-          data: dataSets.monthly.data,
+          data: dataSets.daily.data,
           backgroundColor: 'rgba(75, 192, 192, 0.5)',
           borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 2,
