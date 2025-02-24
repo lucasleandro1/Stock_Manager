@@ -8,6 +8,7 @@
         <%= f.input :movement_type, collection: StockMovement.movement_types.keys, prompt: "Selecione um tipo de movimento",  input_html: { class: "form-control w-100" }, label: false %>
       </div>
     </div>
+    <%= f.input :customer_id, collection: Customer.all, label_method: :name, value_method: :id, prompt: "Selecione um cliente", input_html: { class: "form-control w-100" }, label: false  %>
     <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "quantidade", class: "form-control", placeholder: "quantidade"%>
     <%= f.input :price, required: true, label: false, autofocus: true, autocomplete: "valor", class: "form-control", placeholder: "valor" %>
     <%= f.button :submit, class: "btn btn-primary btn-block my-3" %>

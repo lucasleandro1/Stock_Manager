@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :products
   resources :categories
   resources :stock_movements
+  resources :customers
 end

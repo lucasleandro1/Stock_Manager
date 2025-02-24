@@ -1,4 +1,5 @@
 class StockMovement < ApplicationRecord
+  belongs_to :customer, optional: true
   belongs_to :product
   belongs_to :user
   attribute :movement_type, :integer, default: 0
