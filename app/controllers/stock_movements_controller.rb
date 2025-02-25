@@ -26,13 +26,15 @@ class StockMovementsController < ApplicationController
   end
 
   def update
-    update_service = StockMovementManager::Updater.new(params[:id], stock_movement_params)
-    result = update_service.call
+    @stock_movement = StockMovement.find(params[:id])
+    service = StockMovementManager::Updater.new(@stock_movement.id, stock_movement_params)
+    result = service.call
+  
     if result[:success]
-      redirect_to stock_movements_path, notice: "Movimentação atualizado com sucesso."
+      redirect_to edit_stock_movement_path(@stock_movement), notice: result[:message]
     else
       flash[:alert] = result[:error_message]
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 
@@ -51,9 +53,20 @@ class StockMovementsController < ApplicationController
     end
   end
 
+  def remove_file
+    @stock_movement = StockMovement.find(params[:id])
+    arquivo = @stock_movement.arquivos.find(params[:arquivo_id])
+
+    if arquivo.purge
+      redirect_to edit_stock_movement_path(@stock_movement), notice: "Arquivo excluído com sucesso."
+    else
+      redirect_to edit_stock_movement_path(@stock_movement), alert: "Erro ao excluir o arquivo."
+    end
+  end
+
   private
 
   def stock_movement_params
-    params.require(:stock_movement).permit(:id, :quantity, :movement_type, :reason, :price, :product_id)
+    params.require(:stock_movement).permit(:product_id, :quantity, :movement_type, :reason, :customer_id, :price, arquivos: [])
   end
 end

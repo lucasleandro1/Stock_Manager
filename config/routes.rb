@@ -4,5 +4,10 @@ Rails.application.routes.draw do
   devise_for :users
   resources :products
   resources :categories
-  resources :stock_movements
+  resources :stock_movements do
+    member do
+      delete :remove_file
+    end
+  end
+  resources :customers
 end

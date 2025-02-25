@@ -17,6 +17,8 @@
     <p>(Precisamos da sua senha atual para confirmar suas alterações)</p>
     <%= f.password_field :current_password,  required: true, label: false, autocomplete: "current-password", class: "form-control", placeholder: "Senha atual" %>
   </div>
+  <%= f.input :business_name, required: true, label: false, autofocus: true, autocomplete: "Nome",  class: "form-control p-2" , placeholder: "Nome"%>
+  <%= f.input :cnpj, required: true, label: false, autofocus: true, autocomplete: "cnpj",  class: "form-control", placeholder: "CNPJ"%>
   <%= render "devise/shared/error_messages", resource: resource %>
   <div class="actions">
     <%= f.submit "Atualizar",class: "btn btn-primary btn-block" %>

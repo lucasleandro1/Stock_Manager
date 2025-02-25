@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="max-heigth: 10vh" aria-label="Main navigation">
   <div class="w-100 container-fluid">
     <a class="navbar-brand" href="#">StockProduct</a>
@@ -7,21 +6,16 @@
     </button>
     <div class="w-100 navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
       <ul class="w-100 navbar-nav me-auto mb-2 mb-lg-0 .d-flex justify-content-between ">
+        <%if user_signed_in?%>
         <li class="nav-item">
           <%= link_to "Inicio", root_path ,class:"nav-link active", "arial-current": "page"%>
         </li>
-        <% unless user_signed_in?%>
-          <li class="entrar-cadastrar">
-            <%=link_to( "Entrar/Cadastrar", new_user_session_path, class:"nav-link") %>
-          </li>
-        <%end%>
-        <%if user_signed_in?%>
         <div class="d-flex align-items-center" style="position: relative; ">
           <li class="nav-item dropdown" >
-            <a class="nav-link dropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">Produtos</a>
+            <a class="nav-link dropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">Clientes</a>
             <ul class="dropdown-menu " >
-              <li class="nav-item"><%= link_to( "Cadastrar", new_product_path, class:"btnout") %>
-              <li class="nav-item"><%= link_to( "Produtos", products_path, class:"btnout") %>
+              <li class="nav-item"><%= link_to( "Cadastrar", new_customer_path, class:"btnout") %>
+              <li class="nav-item"><%= link_to( "Clientes", customers_path, class:"btnout") %>
             </ul>
           </li>
           <li class="nav-item dropdown" >
@@ -32,13 +26,19 @@
             </ul>
           </li>
           <li class="nav-item dropdown" >
+            <a class="nav-link dropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">Produtos</a>
+            <ul class="dropdown-menu " >
+              <li class="nav-item"><%= link_to( "Cadastrar", new_product_path, class:"btnout") %>
+              <li class="nav-item"><%= link_to( "Produtos", products_path, class:"btnout") %>
+            </ul>
+          </li>
+          <li class="nav-item dropdown" >
             <a class="nav-link dropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">Movimentações</a>
             <ul class="dropdown-menu " >
               <li class="nav-item"><%= link_to( "Movimentar", new_stock_movement_path, class:"btnout") %>
               <li class="nav-item"><%= link_to( "Movimentações", stock_movements_path, class:"btnout") %>
             </ul>
           </li>
-
           <li class="nav-item dropdown" >
             <a class="nav-link dropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">Configurações</a>
             <ul class="dropdown-menu " >

@@ -7,4 +7,5 @@ class User < ApplicationRecord
   has_many :products
   has_many :categories
   has_many :stock_movements
+  has_many :customers
 end
