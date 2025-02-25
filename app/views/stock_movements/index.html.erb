@@ -25,6 +25,7 @@
         <tr>
           <th>Produto</th>
           <th>Tipo de movimentação</th>
+          <th>Cliente</th>
           <th>Valor</th>
           <th>Quantidade</th>
           <th>Categoria</th>
@@ -37,6 +38,7 @@
           <tr>
             <td><%= stock_movement.product.name %></td>
             <td><%= stock_movement.movement_type %></td>
+            <td><%= stock_movement.customer&.name %></td>
             <td><%= number_to_currency(stock_movement.price || sum(stock_movement), unit: "R$") %></td>
             <td><%= stock_movement.quantity %></td>
             <td><%= stock_movement.product.category.name %></td>
