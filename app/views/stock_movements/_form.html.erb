@@ -1,20 +1,36 @@
 <div class="forms d-flex flex-column justify-content-center px-5">
   <%= simple_form_for @stock_movement do |f| %>
     <div class="form d-flex flex-1 mw-100">
-      <div class="w-100 ">
-        <%= f.input :product_id, collection: Product.all, label_method: :name, value_method: :id, prompt: "Selecione um produto",  input_html: { class: "form-control w-100" }, label: false %>
+      <div class="w-100">
+        <%= f.input :product_id, collection: Product.all, label_method: :name, value_method: :id, prompt: "Selecione um produto", input_html: { class: "form-control w-100" }, label: false %>
       </div>
       <div class="w-100 ml-3">
-        <%= f.input :movement_type, collection: StockMovement.movement_types.keys, prompt: "Selecione um tipo de movimento",  input_html: { class: "form-control w-100" }, label: false %>
+        <%= f.input :movement_type, collection: StockMovement.movement_types.keys, prompt: "Selecione um tipo de movimento", input_html: { class: "form-control w-100" }, label: false %>
       </div>
     </div>
-    <%= f.input :customer_id, collection: Customer.all, label_method: :name, value_method: :id, prompt: "Selecione um cliente", input_html: { class: "form-control w-100" }, label: false  %>
-    <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "quantidade", class: "form-control", placeholder: "quantidade"%>
+    <%= f.input :customer_id, collection: Customer.all, label_method: :name, value_method: :id, prompt: "Selecione um cliente (opcional)", input_html: { class: "form-control w-100" }, label: false %>
+
+    <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "quantidade", class: "form-control", placeholder: "quantidade" %>
     <%= f.input :price, required: true, label: false, autofocus: true, autocomplete: "valor", class: "form-control", placeholder: "valor" %>
+
+    <%= f.input :arquivos, as: :file, input_html: { multiple: true } %>
+
+<% if @stock_movement.arquivos.attached? && @stock_movement.arquivos.any? %>
+  <% @stock_movement.arquivos.each do |arquivo| %>
+    <% if arquivo.content_type.in?(%w(application/pdf text/plain application/xml)) %>
+      <div>
+        <%= link_to arquivo.filename.to_s, rails_blob_path(arquivo, disposition: "attachment") %>
+        <%= link_to "Excluir arquivo", arquivo.purge, method: :delete, data: { confirm: "Tem certeza?" } %>
+      </div>
+    <% else %>
+      <p>Arquivo não permitido: <%= arquivo.filename.to_s %></p>
+    <% end %>
+  <% end %>
+<% else %>
+  <p>Nenhum arquivo anexado</p>
+<% end %>
+
+
     <%= f.button :submit, class: "btn btn-primary btn-block my-3" %>
   <% end %>
 </div>
-
-
-
-

@@ -36,9 +36,9 @@
       <tbody>
         <% @stock_movements.each do |stock_movement| %>
           <tr>
-            <td><%= stock_movement.product.name %></td>
+            <td><%= link_to stock_movement.product.name, edit_product_path(stock_movement.product), style: "text-decoration: none; color: inherit;" if stock_movement.product %></td>
             <td><%= stock_movement.movement_type %></td>
-            <td><%= stock_movement.customer&.name %></td>
+            <td><%= link_to stock_movement.customer&.name, edit_customer_path(stock_movement.customer), style: "text-decoration: none; color: inherit;" if stock_movement.customer %> </td>
             <td><%= number_to_currency(stock_movement.price || sum(stock_movement), unit: "R$") %></td>
             <td><%= stock_movement.quantity %></td>
             <td><%= stock_movement.product.category.name %></td>

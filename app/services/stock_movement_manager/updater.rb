@@ -27,8 +27,13 @@ module StockMovementManager
 
     def scope
       @stock_movement = StockMovement.find(stock_movement_id)
-      unless @stock_movement.update(stock_movement_params)
-        raise StandardError.new(stock_movement.errors.full_messages.to_sentence)
+
+      if @stock_movement_params[:arquivos].present?
+        @stock_movement.arquivos.attach(@stock_movement_params[:arquivos])
+      end
+
+      unless @stock_movement.update(stock_movement_params.except(:arquivos))
+        raise StandardError.new(@stock_movement.errors.full_messages.to_sentence)
       end
     end
   end
