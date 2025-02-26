@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :stock_movements do
     member do
-      delete :remove_file
+      delete "remove_file/:arquivo_id", to: "stock_movements#remove_file", as: "remove_file"
     end
   end
   resources :customers

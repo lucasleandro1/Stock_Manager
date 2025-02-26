@@ -29,7 +29,7 @@ class StockMovementsController < ApplicationController
     @stock_movement = StockMovement.find(params[:id])
     service = StockMovementManager::Updater.new(@stock_movement.id, stock_movement_params)
     result = service.call
-  
+
     if result[:success]
       redirect_to edit_stock_movement_path(@stock_movement), notice: result[:message]
     else
@@ -57,7 +57,7 @@ class StockMovementsController < ApplicationController
     @stock_movement = StockMovement.find(params[:id])
     arquivo = @stock_movement.arquivos.find(params[:arquivo_id])
 
-    if arquivo.purge
+    unless arquivo.purge
       redirect_to edit_stock_movement_path(@stock_movement), notice: "Arquivo excluído com sucesso."
     else
       redirect_to edit_stock_movement_path(@stock_movement), alert: "Erro ao excluir o arquivo."
