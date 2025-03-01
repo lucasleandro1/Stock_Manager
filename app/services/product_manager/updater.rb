@@ -18,7 +18,7 @@ module ProductManager
     private
 
     def response(data)
-      { success: true, message: I18n.t("activerecord.errors.messages.product_update."), resources: data }
+      { success: true, message: I18n.t("activerecord.messages.product_update."), resources: data }
     end
 
     def response_error(error)

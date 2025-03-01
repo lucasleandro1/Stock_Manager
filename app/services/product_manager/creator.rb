@@ -9,7 +9,7 @@ module ProductManager
 
     def call
       if product_exists
-        response_error(message: "activerecord.errors.messages.product_exists")
+        response_error(message: I18n.t("activerecord.errors.messages.product_exists"))
       else
         response(create_product)
       end
@@ -20,7 +20,7 @@ module ProductManager
     private
 
     def response(data)
-      { success: true, message: "activerecord.errors.messages.product_created", resource: data }
+      { success: true, message: I18n.t("activerecord.messages.product_created"), resource: data }
     end
 
     def response_error(error)

@@ -20,7 +20,7 @@ module CustomerManager
     private
 
     def response(data)
-      { success: true, message: "activerecord.errors.messages.customer_created", resource: data }
+      { success: true, message: I18n.t("activerecord.messages.customer_created"), resource: data }
     end
 
     def response_error(error)

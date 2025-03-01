@@ -18,7 +18,7 @@ module StockMovementManager
     private
 
     def response(data)
-      { success: true, message: I18n.t("activerecord.errors.messages.stock_movement_update."), resources: data }
+      { success: true, message: I18n.t("activerecord.messages.stock_movement_update."), resources: data }
     end
 
     def response_error(error)
