@@ -10,7 +10,7 @@ module CustomerManager
     def call
       response(scope)
     rescue ActiveRecord::RecordNotFound => e
-      response_error(I18n.t("activerecord.errors.messages.customer_notfound: #{e.message}"))
+      response_error(I18n.t("activerecord.errors.messages.not_found: #{e.message}"))
     rescue StandardError => error
       response_error(error)
     end

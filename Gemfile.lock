@@ -422,6 +422,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   groupdate
+  i18n
   importmap-rails
   jbuilder
   kamal
