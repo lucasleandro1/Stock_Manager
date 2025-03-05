@@ -9,7 +9,7 @@ module CategoryManager
 
     def call
       if category_exists
-        response_error(message: "activerecord.errors.messages.category_exists")
+        response_error(I18n.t("activerecord.errors.messages.category_exists"))
       else
         response(create_category)
       end
@@ -20,11 +20,11 @@ module CategoryManager
     private
 
     def response(data)
-      { success: true, message: "activerecord.errors.messages.category_created", resource: data }
+      { success: true, message: I18n.t("activerecord.messages.category_created"), resource: data }
     end
 
     def response_error(error)
-      { success: false, error_message: error }
+      { success: false, error_message: "#{I18n.t('activerecord.errors.messages.category_create_failed')}: #{error}" }
     end
 
     def category_exists

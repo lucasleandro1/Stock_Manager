@@ -1,7 +1,6 @@
 class StockMovement < ApplicationRecord
   belongs_to :customer, optional: true
   has_many_attached :arquivos
-  validates :customer, presence: true, unless: -> { arquivos.attached? } 
   belongs_to :product
   belongs_to :user
   attribute :movement_type, :integer, default: 0

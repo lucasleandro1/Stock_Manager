@@ -1,5 +1,5 @@
 <div class="forms d-flex flex-column justify-content-center">
-  <%= simple_form_for @product do |f| %>
+  <%= simple_form_for @product, data: { turbo: false } do |f| %>
     <div class="form d-flex flex-1 mw-100 px-5 ">
       <div class="w-100 ">
         <%= f.input :name, required: true, label: false, autofocus: true, autocomplete: "name",class: "form-control", placeholder: "Nome"%>
@@ -11,9 +11,16 @@
     <div class="px-5">
       <%= f.input :price, required: true, label: false, autofocus: true, autocomplete: "price", class: "form-control", placeholder: "Preço" %>
       <%= f.input :description, required: true, label: false, autofocus: true, autocomplete: "description", class: "form-control", placeholder: "Descrição" %>
-        <div class="w-100 ">
-          <%= f.input :category_id, collection: Category.all, label_method: :name, value_method: :id, prompt: "Selecione uma categoria", input_html: { class: "form-control w-100" }, label: false %>
-        </div>
+<div class="w-100">
+  <%= f.input :category_id, 
+    collection: current_user.categories, 
+    label_method: :name, 
+    value_method: :id, 
+    prompt: "Selecione uma categoria", 
+    input_html: { class: "form-control w-100" }, 
+    label: false %>
+</div>
+
       <%= f.button :submit, class: "btn btn-primary btn-block my-3" %>
     </div>
   <% end %>

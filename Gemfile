@@ -46,6 +46,8 @@ gem "groupdate"
 gem "chartkick"
 
 gem "kaminari"
+
+gem "i18n"
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
@@ -65,6 +67,9 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  # Gem para lint e análise de código
+  gem 'rubocop', require: false
+
 end
 
 group :test do

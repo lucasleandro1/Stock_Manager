@@ -422,6 +422,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   groupdate
+  i18n
   importmap-rails
   jbuilder
   kamal
@@ -430,6 +431,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 8.0.1)
   rspec-rails (~> 7.1.1)
+  rubocop
   rubocop-rails-omakase
   selenium-webdriver
   simple_form

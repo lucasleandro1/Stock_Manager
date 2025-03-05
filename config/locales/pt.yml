@@ -1,0 +1,19 @@
+pt:
+  hello: "Olá"
+
+  activerecord:
+    models:
+      customers: "Clientes"
+      categories: "Categorias"
+      stock_movements: "Movimentações"
+      products: "Produtos"
+
+    messages:
+      category_created: "Categoria criada com sucesso"
+      categories_created: "Cadastrar Categoria"
+      edit_category: "Editar Categoria"
+
+    errors:
+      messages:
+        category_create_failed: "Falha ao criar categoria"
+        category_exists: "Categoria já existe"

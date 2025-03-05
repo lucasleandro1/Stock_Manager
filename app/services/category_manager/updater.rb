@@ -10,7 +10,7 @@ module CategoryManager
     def call
       response(scope)
     rescue ActiveRecord::RecordNotFound => e
-      response_error(I18n.t("activerecord.errors.messages.category_notfound: #{e.message}"))
+      response_error(I18n.t("activerecord.errors.messages.not_found: #{e.message}"))
     rescue StandardError => error
       response_error(error)
     end
@@ -18,7 +18,7 @@ module CategoryManager
     private
 
     def response(data)
-      { success: true, message: I18n.t("activerecord.errors.messages.category_update."), resources: data }
+      { success: true, message: I18n.t("activerecord.messages.category_update."), resources: data }
     end
 
     def response_error(error)

@@ -10,7 +10,7 @@ module StockMovementManager
     def call
       response(scope)
     rescue ActiveRecord::RecordNotFound => e
-      response_error(I18n.t("activerecord.errors.messages.stock_movement_notfound: #{e.message}"))
+      response_error(I18n.t("activerecord.errors.messages.not_found: #{e.message}"))
     rescue StandardError => error
       response_error(error)
     end
@@ -18,7 +18,7 @@ module StockMovementManager
     private
 
     def response(data)
-      { success: true, message: I18n.t("activerecord.errors.messages.stock_movement_update."), resources: data }
+      { success: true, message: I18n.t("activerecord.messages.stock_movement_update."), resources: data }
     end
 
     def response_error(error)

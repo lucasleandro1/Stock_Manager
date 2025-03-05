@@ -7,7 +7,7 @@ class HomeController < ApplicationController
 
     @vendas_por_mes = current_user.stock_movements
       .where(created_at: 1.year.ago..Time.current)
-      .group_by_month(:created_at, format: "%B %Y")
+      .group_by_month(:created_at, format: "%B %Y", time_zone: false)
       .sum(:movement_type)
 
     @lucro = current_user.stock_movements.lucro_por_mes.values.sum
@@ -25,7 +25,7 @@ class HomeController < ApplicationController
 
     @monthly_entries = current_user.stock_movements
       .where(movement_type: "entrada", created_at: 1.year.ago..Time.current)
-      .group_by_month(:created_at, format: "%b %Y")
+      .group_by_month(:created_at, format: "%b %Y", time_zone: false)
       .sum(:price)
 
     @low_stock_products = current_user.products.where("stock_quantity < ?", 10)
