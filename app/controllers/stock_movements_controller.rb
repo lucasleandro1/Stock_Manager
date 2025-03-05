@@ -29,7 +29,6 @@ class StockMovementsController < ApplicationController
     @stock_movement = StockMovement.find(params[:id])
     service = StockMovementManager::Updater.new(@stock_movement.id, stock_movement_params)
     result = service.call
-
     if result[:success]
       redirect_to edit_stock_movement_path(@stock_movement), notice: result[:message]
     else
