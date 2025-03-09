@@ -118,6 +118,8 @@ GEM
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
+    factory_bot (6.5.1)
+      activesupport (>= 6.1.0)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -333,6 +335,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    shoulda-matchers (5.3.0)
+      activesupport (>= 5.2.0)
     simple_form (5.3.1)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -421,6 +425,7 @@ DEPENDENCIES
   chartkick
   debug
   devise (~> 4.9)
+  factory_bot (~> 6.5)
   groupdate
   i18n
   importmap-rails
@@ -434,6 +439,7 @@ DEPENDENCIES
   rubocop
   rubocop-rails-omakase
   selenium-webdriver
+  shoulda-matchers (~> 5.0)
   simple_form
   solid_cable
   solid_cache
