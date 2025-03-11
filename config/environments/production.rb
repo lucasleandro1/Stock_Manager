@@ -88,6 +88,6 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   config.hosts.clear
-  config.hosts << "stock-manager-lez2.onrender.com"
-  Rails.application.config.hosts << "stock-manager-lez2.onrender.com"
+  config.hosts << "stock-manager-web.onrender.com"
+  Rails.application.config.hosts << "stock-manager-web.onrender.com"
 end
