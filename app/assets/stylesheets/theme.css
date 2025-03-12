@@ -239,7 +239,7 @@ hr {
 }
 
 .container-fluid {
-  width: 85%;
+  width: 80%;
 }
 
 .navbar-nav .nav-item.dropdown .nav-link {
@@ -264,6 +264,7 @@ hr {
 
 .container-1 {
   height: 90vh;
+  margin: 0;
 }
 
 .card-1 {
