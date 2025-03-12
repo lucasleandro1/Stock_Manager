@@ -2,5 +2,10 @@
 
 require 'rails_helper'
 
-Rspec.described Category, type: :model do
+RSpec.describe Category, type: :model do
+  describe '#validations' do
+    context 'when present' do
+      it { is_expected.to validate_presence_of(:name) }
+    end
+  end
 end
