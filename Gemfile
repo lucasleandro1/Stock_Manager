@@ -80,5 +80,5 @@ group :test do
 end
 
 gem "factory_bot", "~> 6.5"
-gem "pg"
 
+gem "pg"
