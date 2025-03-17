@@ -20,17 +20,17 @@ RSpec.describe Product, type: :model do
   end
 
   describe "#lucro_total" do
-  let(:user) { create(:user) }              # Cria um user
-  let(:category) { create(:category, user: user) }  # Cria a categoria associada ao user
-  let(:product) { create(:product, category: category, user: user) }  # Cria o produto associado à categoria e ao user
+    let(:user) { create(:user) }
+    let(:category) { create(:category, user: user) }
+    let(:product) { create(:product, category: category, user: user) }
 
-  before do
-    create(:stock_movement, product: product, movement_type: :entrada, price: 5.0, quantity: 2)  # Custo total: 10
-    create(:stock_movement, product: product, movement_type: :saida, price: 15.0, quantity: 3)   # Venda total: 45
-  end
+    before do
+      create(:stock_movement, product: product, movement_type: :entrada, price: 5.0, quantity: 2)
+      create(:stock_movement, product: product, movement_type: :saida, price: 15.0, quantity: 3)
+    end
 
-  it "calculates total profit correctly" do
-    expect(product.lucro_total).to eq(45 - 10)  # 45 (vendas) - 10 (compras)
+    it "calculates total profit correctly" do
+      expect(product.lucro_total).to eq(45 - 10)
+    end
   end
-end
 end
