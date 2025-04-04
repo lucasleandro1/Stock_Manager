@@ -6,11 +6,18 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+def set_locate_configs_and_timezone
+  config.time_zone = "Brasilia"
+  config.i18n.load_path += Dir[Rails.root.join("config", "locales", "**/*.{rb,yml}").to_s]
+  config.i18n.available_locales = [ :en, "pt" ]
+  config.i18n.default_locale = :pt
+end
+
 module ProductStock
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
-
+    set_locate_configs_and_timezone # pt
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.

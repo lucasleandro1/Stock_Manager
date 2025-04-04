@@ -1,22 +1,23 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
 
-  def index
-    @user = current_user
-    @product = @user.product.order(created_at: :desc)
+  def new
+    @product = Product.new
   end
 
-  def new
-    @product = current_user.product.build
+  def index
+    @products = ProductManager::List.new(current_user, params).call.page(params[:page]).per(10)
+    @categories = Category.all
   end
 
   def create
-    @product = current_user.product.build(product_params)
-    if @product.save
-      flash[:notice] = "product created."
-      redirect_to root_path
+    service = ProductManager::Creator.new(current_user, product_params)
+    result = service.call
+    if result[:success]
+      redirect_to products_path, notice: result[:message]
     else
-      flash[:error] = "Error when registering product."
+      @product = Product.new(product_params)
+      flash[:alert] = result[:error_message]
       render :new
     end
   end
@@ -26,29 +27,35 @@ class ProductsController < ApplicationController
   end
 
   def update
-    @product = current_user.product.find(params[:id])
-    if @product.update(product_params)
-      flash[:notice] = "product atualizado com sucesso."
-      redirect_to root_path
+    update_service = ProductManager::Updater.new(params[:id], product_params)
+    result = update_service.call
+
+    if result[:success]
+      redirect_to products_path, notice: "Produto atualizado com sucesso."
     else
-      flash[:error] = "product não atualizado."
-      render :edit
+      flash[:alert] = result[:error_message]
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def edit
-    @product = current_user.product.find(params[:id])
+    @product = current_user.products.find(params[:id])
   end
 
   def destroy
-    @product = current_user.product.find(params[:id])
-    @product.destroy
-    redirect_to products_path, notice: "product excluído com sucesso."
+    destroy_service = ProductManager::Destroyer.new(params[:id])
+    result = destroy_service.call
+    if result[:success]
+      redirect_to products_path, notice: result[:message]
+    else
+      flash[:alert] = result[:error_message]
+      redirect_to products_path
+    end
   end
 
   private
 
   def product_params
-    params.require(:product).permit(:id, :name, :description, :sku, :price, :stock_quantity)
+    params.require(:product).permit(:id, :name, :description, :sku, :price, :stock_quantity, :category_id)
   end
 end

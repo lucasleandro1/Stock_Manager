@@ -1,0 +1,16 @@
+<div class="forms d-flex flex-column justify-content-center px-5">
+  <%= simple_form_for @customer, data: { turbo: false } do |f| %>
+    <div class="form d-flex flex-1 mw-100">
+      <div class="w-100 ">
+        <%= f.input :name, required: true, label: false, autofocus: true, autocomplete: "Nome", class: "form-control", placeholder: "Nome"%>
+      </div>
+      <div class="w-100 ml-3">
+        <%= f.input :cpf_cnpj, required: true, label: false, autofocus: true, autocomplete: "CPF/CNPJ", class: "form-control", placeholder: "CPF/CNPJ"%>
+      </div>
+    </div>
+    <%= f.input :phone, required: true, label: false, autofocus: true, autocomplete: "Telefone", class: "form-control", placeholder: "Telefone" %>
+    <%= f.input :email, required: true, label: false, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "email" %>
+    <%= f.input :address, required: true, label: false, autofocus: true, autocomplete: "endereço", class: "form-control", placeholder: "endereço" %>
+    <%= f.button :submit, class: "btn btn-primary btn-block my-3" %>
+  <% end %>
+</div>

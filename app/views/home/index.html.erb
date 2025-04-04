@@ -1,20 +1,215 @@
-<% if @products.present? %>
-  <div class="cards">
-    <% @products.each do |product| %>
-      <div class="post">
-        <p class="tag"><%= product.name%></p>
-        <p class="tag"># <%= product.sku%></p>
-        <p class="tag">Preço <%= product.price%></p>
-        <p class="tag">Quantidade: <%= product.stock_quantity%></p>
-          <a href="#" data-bs-toggle="dropdown" aria-expanded="false"></a>
-          <ul>
-            <li><%= link_to "Editar", edit_product_path(product), class: "btnout" %></li>
-            <li><%= button_to("Excluir", product_path(product), method: :delete ,class:"btnout") %></li>
-          </ul>
-        <hr>
+<div class="container-fluid mt-4">
+  <div class="row g-8">
+    <div class="col-md-8">
+      <div class="card p-4 shadow-sm"style="background-color: #e3f2fd; border-color: #90caf9;">
+        <h3 class="text-center"> Lucro </h3>
+        <canvas id="myChart" style="max-height: 250px; max-width: 900px;"></canvas>
+        <select id="filterPeriod" class="filter form-select form-select-sm" style="width: 80px;">
+          <option value="daily"> Dia </option>
+          <option value="monthly"> Mês </option>
+          <option value="yearly"> Ano </option>
+        </select>
       </div>
-    <% end %>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-4 shadow-sm" style="background-color: #e3f2fd; border-color: #90caf9; height: 100%; display: flex; flex-direction: column; justify-content: space-around;">
+        <h3 class="text-start ">Distribuição de Vendas</h3>
+        <div class="d-flex flex-row justify-content-around align-items-center">
+          <canvas id="myPieChart" style="max-height: 180px; max-width: 180px;"></canvas>
+          <div id="chartLegend" class="ms-3" ></div>
+        </div>
+      </div>
+    </div>
   </div>
-<% else %>
-  <p>Não há produtos.</p>
-<% end %>
+
+  <div class="row mt-4 g-4">
+    <div class="col-md-4">
+      <div class="card p-4 shadow-sm text-center" style="background-color: #e3f2fd; border-color: #90caf9;">
+        <h4> Gastos do Mês</h4>
+        <p class="fs-4 fw-bold" style="font-size: 18px;"><%=number_to_currency(@monthly_entries.values.sum, unit: "R$", separator: ",", delimiter: ".")%> </p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 shadow-sm text-center" style="background-color: #e3f2fd; border-color: #90caf9;">
+        <h4> Total de Vendas</h4>
+        <p class="fs-4 fw-bold" style="font-size: 18px;"><%= @vendas_por_mes.values.sum %> vendas</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-4 shadow-sm text-center" style="background-color: #e3f2fd; border-color: #90caf9;">
+        <h4> Lucro</h4>
+          <p class="fs-4 fw-bold text-success" style="font-size: 18px;">R$ <%= number_to_currency(@lucro, unit: "R$", separator: ",", delimiter: ".") %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4 g-3">
+    <div class="col-md-6">
+      <div class="card shadow-sm d-flex flex-column align-items-start " style="background-color: #e3f2fd; border-color: #90caf9; padding: 17px 20px 0px 40px">
+        <h5> Últimas Movimentações</h5>
+        <ul>
+          <% @movimentacoes_recentes.each do |mov| %>
+            <li>
+              <strong><%= mov.movement_type.capitalize %></strong> - 
+              Produto: <%= mov.product.name %>, 
+              Preço: R$ <%= number_to_currency(mov.price || sum(mov), unit: "R$", separator: ",", delimiter: ".") %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card p-3 shadow-sm " style="background-color: #e3f2fd; border-color: #90caf9;">
+        <div class="d-flex flex-row ">
+          <div class="card-1">
+            <h5> Total em Estoque</h5>
+            <p class="fs-4"><%= @products.count %> produtos</p>
+          </div>
+          <li class="nav-item-1 dropup" style="list-style-type: none;">
+            <a class="nav-link-1 dropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">🔔</a>
+            <ul class="dropdown-menu">
+              <% @low_stock_products.each do |product| %>
+                <li class="nav-item"><%= product.name %></li>
+              <% end %>
+            </ul>
+          </li>
+        </div>
+          <h5> Produto Mais Vendido</h5>
+          <p class="fs-4"><%= @top_products.first.product.name if @top_products.any? %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    // var dataSets = {
+    //   monthly: {
+    //     labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+    //     data: [5000, 7000, 8000, 6000, 9500, 11000, 12000, 13000, 9000, 8500, 7500, 8800]
+    //   },
+    //   daily: {
+    //     labels: ["01", "02", "03", "04", "05", "06", "07"],
+    //     data: [500, 1200, 800, 600, 1500, 1100, 1300]
+    //   },
+    //   yearly: {
+    //     labels: ["2021", "2022", "2023", "2024"],
+    //     data: [80000, 95000, 102000, 115000]
+    //   }
+    // };
+    var dataSets = {
+      monthly: {
+          labels: <%= raw @lucro_por_mes.keys.to_json %>,
+          data: <%= raw @lucro_por_mes.values.to_json %>
+      },
+      daily: {
+          labels: <%= raw @lucro_por_dia.keys.to_json %>,
+          data: <%= raw @lucro_por_dia.values.to_json %>
+      },
+      yearly: {
+          labels: <%= raw @lucro_por_ano.keys.to_json %>,
+          data: <%= raw @lucro_por_ano.values.to_json %>
+      }
+    };
+
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: dataSets.daily.labels,
+        datasets: [{
+          label: 'Lucro',
+          data: dataSets.daily.data,
+          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 2,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { 
+            beginAtZero: true,
+            grid: {
+              display: false 
+            }
+          },
+          x: {
+            grid: {
+              display: false 
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false 
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            titleColor: 'rgba(255, 255, 255, 0.9)',
+            bodyColor: 'rgba(255, 255, 255, 0.9)',
+            borderColor: 'rgba(255, 255, 255, 0.9)',
+            borderWidth: 1
+          }
+        }
+      }
+    });
+
+    document.getElementById("filterPeriod").addEventListener("change", function() {
+      var selectedPeriod = this.value;
+      myChart.data.labels = dataSets[selectedPeriod].labels;
+      myChart.data.datasets[0].data = dataSets[selectedPeriod].data;
+      myChart.update();
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener("turbo:load", function() {
+    var ctx = document.getElementById('myPieChart').getContext('2d');
+
+    var labels = <%= raw @top_products.map { |p| p.product.name }.to_json %>;
+    var dataValues = <%= raw @top_products.map { |p| p.total_quantity }.to_json %>;
+    var colors = ['#00B9AE', '#037171', '#03312E', '#02C3BD', '#009F93'];
+
+    var myPieChart = new Chart(ctx, {
+      type: 'doughnut', // Alterado para doughnut para criar o furo no meio
+      data: {
+        labels: labels,
+        datasets: [{
+          data: dataValues,
+          backgroundColor: colors,
+          borderColor: colors,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: '50%', // Define o tamanho do furo no meio
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                return tooltipItem.label + ': ' + tooltipItem.raw + ' unidades';
+              }
+            }
+          }
+        }
+      }
+    });
+
+    var legendHtml = labels.map((label, index) => {
+      return `<div class="d-flex align-items-center mb-2">
+                <span style="display:inline-block; width: 14px; height: 14px; background-color: ${colors[index]}; margin-right: 8px;"></span>
+                ${label}
+              </div>`;
+    }).join('');
+    document.getElementById('chartLegend').innerHTML = legendHtml;
+  });
+</script>

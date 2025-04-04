@@ -1,0 +1,6 @@
+<div class="forms d-flex flex-column justify-content-center px-5">
+  <%= simple_form_for @category , data: { turbo: false } do |f| %>
+    <%= f.input :name, required: true, label: false, autofocus: true, autocomplete: "name", class: "form-control", placeholder: "Nome"%>
+    <%= f.button :submit, class: "btn btn-primary btn-block my-3" %>
+  <% end %>
+</div>

@@ -1,23 +1,16 @@
 module ProductManager
   class List
+    def initialize(user, params)
+      @user = user
+      @params = params
+    end
+
     def call
-      response(scope)
-    rescue StandardError => error
-      response_error(error)
-    end
-
-    private
-
-    def response(data)
-      { success: true, resources: data }
-    end
-
-    def response_error(error)
-      { success: false, error_message: error.message }
-    end
-
-    def scope
-      Product.all
+      products = @user.products.order(created_at: :desc)
+      if @params[:search].present? && @params[:search][:category_id].present?
+        products = products.where(category_id: @params[:search][:category_id])
+      end
+      products
     end
   end
 end

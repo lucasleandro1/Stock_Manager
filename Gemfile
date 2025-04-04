@@ -41,6 +41,13 @@ gem "devise", "~> 4.9"
 
 gem "simple_form"
 
+gem "groupdate"
+
+gem "chartkick"
+
+gem "kaminari"
+
+gem "i18n"
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
@@ -53,15 +60,25 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "rspec-rails", "~> 7.1.1"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  # Gem para lint e análise de código
+  gem 'rubocop', require: false
+
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem 'shoulda-matchers', '~> 5.0'
 end
+
+gem "factory_bot", "~> 6.5"
+
+gem "pg"

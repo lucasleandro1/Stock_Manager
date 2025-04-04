@@ -1,0 +1,33 @@
+<div class="forms d-flex flex-column justify-content-center px-5">
+  <%= simple_form_for @stock_movement, data: { turbo: false }, html: { multipart: true } do |f| %>
+    <div class="form d-flex flex-1 mw-100">
+      <div class="w-100">
+        <%= f.input :product_id, collection: current_user.products.all, label_method: :name, value_method: :id, prompt: "Selecione um produto", input_html: { class: "form-control w-100" }, label: false %>
+      </div>
+      <div class="w-100 ml-3">
+        <%= f.input :movement_type, collection: current_user.stock_movements.movement_types.keys, prompt: "Selecione um tipo de movimento", input_html: { class: "form-control w-100" }, label: false %>
+      </div>
+    </div>
+
+    <%= f.input :customer_id, collection: current_user.customers.all, label_method: :name, value_method: :id, prompt: "Selecione um cliente (opcional)", input_html: { class: "form-control w-100" }, label: false %>
+    
+    <%= f.input :quantity, required: true, label: false, autofocus: true, autocomplete: "quantidade", class: "form-control", placeholder: "quantidade" %>
+    <%= f.input :price, required: true, label: false, autofocus: true, autocomplete: "valor", class: "form-control", placeholder: "valor" %>
+
+    <%= f.input :arquivos, as: :file, input_html: { multiple: true } %>
+
+    <%= f.button :submit, class: "btn btn-primary btn-block my-3" %>
+  <% end %>
+</div>
+
+<% if @stock_movement.arquivos.attached? %>
+  <h3>Arquivos Anexados:</h3>
+  <% @stock_movement.arquivos.each do |arquivo| %>
+    <div>
+      <%= link_to "Download #{arquivo.filename.to_s}", url_for(arquivo), target: "_blank" %>
+      <%= button_to "Excluir arquivo", remove_file_stock_movement_path(@stock_movement, arquivo_id: arquivo.id), method: :delete, data: { confirm: "Tem certeza?" } %>
+    </div>
+  <% end %>
+<% else %>
+  <p>Não há arquivos anexados.</p>
+<% end %>

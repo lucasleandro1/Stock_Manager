@@ -1,0 +1,27 @@
+<div class="h-100 w-100 pt-4">
+  <h1 class="title-1"><%= t("activerecord.models.categories") %></h1>
+  <% if @categories.present? %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>categoria</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @categories.each do |category| %>
+          <tr>
+            <td><%= category.name %></td>
+            <td class= "btn">
+              <%= link_to "Editar", edit_category_path(category), class: "btn btn-sm"%>
+              <%= button_to "Excluir", category_path(category), method: :delete, class: "btn btn-sm", data: { confirm: "Tem certeza?" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="alert alert-warning">Nenhuma categoria encontrada.</p>
+  <% end %>
+  <%= paginate @categories %>
+</div>

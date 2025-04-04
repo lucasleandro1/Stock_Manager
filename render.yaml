@@ -1,0 +1,22 @@
+databases:
+  - name: stock_manager_database
+    databaseName: stock_manager_prod
+    user: stock_manager
+    plan: free
+
+services:
+  - type: web
+    name: stock_manager_web
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: bundle exec rails s
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: stock_manager_database
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: 2
