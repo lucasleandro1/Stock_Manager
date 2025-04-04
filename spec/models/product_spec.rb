@@ -32,5 +32,6 @@ RSpec.describe Product, type: :model do
     it "calculates total profit correctly" do
       expect(product.lucro_total).to eq(45 - 10)
     end
+    asdfsdfsa
   end
 end
